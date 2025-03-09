@@ -1,5 +1,15 @@
 local player = game.Players.LocalPlayer
 
+local Ab1Cd = 120
+local Ab2Cd = 5
+local Ab3Cd = 30
+local Ab4Cd = 60
+
+local Ab1CdV = false
+local Ab2CdV = false
+local Ab3CdV = false
+local Ab4CdV = false
+
 local function cleanup()
     -- Remove any existing cloned ability buttons
     for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton"}) do
@@ -134,6 +144,7 @@ local function initializeAbility()
 
     -- Function to trigger the Fake Heel Flick ability
     local function triggerAbility1()
+        
         -- Play the sound at the start of the move
         sound1:Play()
 
@@ -290,8 +301,15 @@ local function initializeAbility()
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
-        -- Trigger the Fake Heel Flick ability when the button is clicked
-        triggerAbility1()
+        if Ab1CdV == false then
+            triggerAbility1()
+            Ab1CdV = true
+            Clone1.Cooldown.UIGradient.Offset.Y = 0
+            while Clone1.Cooldown.UIGradient.Offset.Y < 1 do
+                Clone1.Cooldown.UIGradient.Offset.Y += 0.01
+            end
+            wait(Ab1Cd)
+        end
     end)
 
     Clone2.Activated:Connect(function()
