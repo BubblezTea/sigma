@@ -225,7 +225,7 @@ local function initializeAbility()
     end
 
     -- Function to trigger the Jinpachi Turn ability
-    local function triggerAbility2(Ability)
+    local function triggerAbility2()
         -- Apply a forward force to the player
         local bodyVelocity = Instance.new("BodyVelocity")
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
@@ -326,7 +326,7 @@ local function initializeAbility()
     Clone1.Activated:Connect(function()
         -- Trigger the Fake Heel Flick ability when the button is clicked
         if Ab1 == false then
-                triggerAbility1(FakeHeelFlick)
+                triggerAbility1()
                 cooldown(FakeHeelFlickCd, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
@@ -380,7 +380,7 @@ local function initializeAbility()
 
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             if Ab1 == false then
-                triggerAbility1(FakeHeelFlick)
+                triggerAbility1()
                 cooldown(FakeHeelFlickCd, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
@@ -393,7 +393,7 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Z then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
-                triggerAbility2(JinpachiTurn)
+                triggerAbility2()
                 cooldown(JinpachiTurnCd, Ab2Cd)
                 Ab2 = true
                 wait(Ab2Cd)
@@ -406,7 +406,7 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
-                triggerAbility3(Metavision)
+                triggerAbility3()
                 cooldown(MetavisionCd, Ab3Cd)
                 Ab3 = true
                 wait(Ab3Cd)
@@ -419,7 +419,7 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.B then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
-                triggerAbility4(SatoruShot)
+                triggerAbility4()
                 cooldown(SatoruShotCd, Ab4Cd)
                 Ab4 = true
                 wait(Ab4Cd)
