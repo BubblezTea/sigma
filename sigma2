@@ -10,10 +10,10 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
-local Ab1KyBind = Enum.Keycode.Z
-local Ab2KyBind = Enum.Keycode.X
-local Ab3KyBind = Enum.Keycode.F
-local Ab4KyBind = Enum.Keycode.LeftAlt
+local Ab1KyBind = Enum.KeyCode.Z
+local Ab2KyBind = Enum.KeyCode.X
+local Ab3KyBind = Enum.KeyCode.F
+local Ab4KyBind = Enum.KeyCode.LeftAlt
 
 local strength = 150
 
