@@ -250,7 +250,7 @@ local function initializeAbility()
         -- Fire the ball after the animation finishes
         animationTrack3.Stopped:Connect(function()
             local args = {
-                [1] = 300,  -- Adjust force as necessary
+                [1] = 148,  -- Adjust force as necessary
             }
             game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
         end)
@@ -262,7 +262,7 @@ local function initializeAbility()
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -4
     Clone1.Keybind.Text = "Y"
-    Clone1.Timer.Text = "Egoistic Style"
+    Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
     Clone1.Cooldown:Destroy()
 
@@ -271,7 +271,7 @@ local function initializeAbility()
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
     Clone2.Keybind.Text = "N"
-    Clone2.Timer.Text = "Jinpachi Turn"
+    Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
     Clone2.Cooldown:Destroy()
 
@@ -289,7 +289,7 @@ local function initializeAbility()
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
     Clone4.Keybind.Text = "T"
-    Clone4.Timer.Text = "Ego Bang"
+    Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
     Clone4.Cooldown:Destroy()
 
