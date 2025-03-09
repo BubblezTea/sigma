@@ -11,8 +11,6 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
-local Goal = {Offset = Vector2.new(0, 1)}
-
 local strength = 175
 
 local function cleanup()
@@ -430,6 +428,8 @@ local function initializeAbility()
     end)
 end
 
+local Goal = {Offset = Vector2.new(0, 1)}
+
 -- Reinitialize the ability each time the character is added (e.g., when joining a match)
 player.CharacterAdded:Connect(function()
     cleanup()
@@ -444,5 +444,5 @@ end
 
 function Cooldown(ability, cooldown)
     local Info = TweenInfo.new(cooldown)
-    local Tween = TweenService:Create(ability.Offset, Info, Goal)
+    local Tween = TweenService:Create(ability, Info, Goal)
 end
