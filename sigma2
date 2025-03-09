@@ -10,10 +10,10 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
-local Ab1KyBind = Z
-local Ab2KyBind = X
-local Ab3KyBind = F
-local Ab4KyBind = LeftAlt
+local Ab1KyBind = Enum.Keycode.Z
+local Ab2KyBind = Enum.Keycode.X
+local Ab3KyBind = Enum.Keycode.F
+local Ab4KyBind = Enum.Keycode.LeftAlt
 
 local strength = 150
 
@@ -286,7 +286,7 @@ local function displayCoolDown(text, duration)
     Clone1.Name = "FakeHeelFlickButton"
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -4
-    Clone1.Keybind.Text = Ab1Kybind
+    Clone1.Keybind.Text = Z
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
     Clone1.Cooldown:Destroy()
@@ -295,7 +295,7 @@ local function displayCoolDown(text, duration)
     Clone2.Name = "JinpachiTurnButton"
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
-    Clone2.Keybind.Text = Ab2Kybind
+    Clone2.Keybind.Text = X
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
     Clone2.Cooldown:Destroy()
@@ -304,7 +304,7 @@ local function displayCoolDown(text, duration)
     Clone3.Name = "MetavisionButton"
     Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone3.LayoutOrder = -3
-    Clone3.Keybind.Text = Ab3Kybind
+    Clone3.Keybind.Text = LeftAlt
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
     Clone3.Cooldown:Destroy()
@@ -313,7 +313,7 @@ local function displayCoolDown(text, duration)
     Clone4.Name = "SatoruShotButton"
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
-    Clone4.Keybind.Text = Ab4Kybind
+    Clone4.Keybind.Text = F
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
     Clone4.Cooldown:Destroy()
@@ -370,7 +370,7 @@ local function displayCoolDown(text, duration)
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab1Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab1Kybind then
             if Ab1 == false then
                 triggerAbility1()
                 Ab1 = true
@@ -381,7 +381,7 @@ local function displayCoolDown(text, duration)
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab2Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab2Kybind then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2()
@@ -393,7 +393,7 @@ local function displayCoolDown(text, duration)
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab3Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab4Kybind then
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
                 triggerAbility3()
@@ -405,7 +405,7 @@ local function displayCoolDown(text, duration)
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab4Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab3Kybind then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4()
