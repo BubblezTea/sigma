@@ -284,7 +284,6 @@ local function initializeAbility()
     Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
-    Clone1.Cooldown:Destroy()
 
     local Clone2 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone2.Name = "JinpachiTurnButton"
@@ -293,7 +292,6 @@ local function initializeAbility()
     Clone2.Keybind.Text = "Z"
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
-    Clone2.Cooldown:Destroy()
 
     local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone3.Name = "MetavisionButton"
@@ -302,7 +300,6 @@ local function initializeAbility()
     Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
-    Clone3.Cooldown:Destroy()
 
     local Clone4 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone4.Name = "SatoruShotButton"
@@ -311,7 +308,6 @@ local function initializeAbility()
     Clone4.Keybind.Text = "B"
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
-    Clone4.Cooldown:Destroy()
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
