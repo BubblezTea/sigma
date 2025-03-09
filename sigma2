@@ -327,6 +327,7 @@ local function initializeAbility()
         if Ab1 == false then
                 triggerAbility1()
                 local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
+                Tween1:Play()
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -340,6 +341,7 @@ local function initializeAbility()
         if Ab2 == false then
                 triggerAbility2()
                 local Tween2 = TweenService:Create(Cooldown2, info2, Goal)
+                Tween2:Play()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -352,6 +354,7 @@ local function initializeAbility()
         if Ab3 == false then
                 triggerAbility3()
                 local Tween3 = TweenService:Create(Cooldown3, info3, Goal)
+                Tween3:Play()
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -365,6 +368,7 @@ local function initializeAbility()
         if Ab4 == false then
                 triggerAbility4()
                 local Tween4 = TweenService:Create(Cooldown4, info4, Goal)
+                Tween4:Play()
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
@@ -381,6 +385,7 @@ local function initializeAbility()
             if Ab1 == false then
                 triggerAbility1()
                 local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
+                Tween1:Play()
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -394,6 +399,7 @@ local function initializeAbility()
             if Ab2 == false then
                 triggerAbility2()
                 local Tween2 = TweenService:Create(Cooldown2, info2, Goal)
+                Tween2:Play()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -407,6 +413,7 @@ local function initializeAbility()
             if Ab3 == false then
                 triggerAbility3()
                 local Tween3 = TweenService:Create(Cooldown3, info3, Goal)
+                Tween3:Play()
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -420,6 +427,7 @@ local function initializeAbility()
             if Ab4 == false then
                 triggerAbility4()
                 local Tween4 = TweenService:Create(Cooldown4, info4, Goal)
+                Tween4:Play()
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
