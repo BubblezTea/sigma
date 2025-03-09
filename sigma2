@@ -250,7 +250,7 @@ local function initializeAbility()
         -- Fire the ball after the animation finishes
         animationTrack3.Stopped:Connect(function()
             local args = {
-                [1] = 132,  -- Adjust force as necessary
+                [1] = 300,  -- Adjust force as necessary
             }
             game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
         end)
