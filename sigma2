@@ -305,10 +305,7 @@ local function initializeAbility()
             triggerAbility1()
             Ab1CdV = true
             Clone1.Cooldown.UIGradient.Offset.Y = 0
-            while Clone1.Cooldown.UIGradient.Offset.Y < 1 do
-                Clone1.Cooldown.UIGradient.Offset.Y += 0.01
-            end
-            wait(Ab1Cd)
+            
         end
     end)
 
