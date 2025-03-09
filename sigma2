@@ -326,8 +326,7 @@ local function initializeAbility()
         -- Trigger the Fake Heel Flick ability when the button is clicked
         if Ab1 == false then
                 triggerAbility1()
-                local Tween = TweenService:Create(FakeHeelFlickCd, Ab1Cd, Goal)
-                Tween:Play()
+                Cooldown(FakeHeelFlickCd, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -340,8 +339,7 @@ local function initializeAbility()
         -- Trigger the Jinpachi Turn ability when the button is clicked
         if Ab2 == false then
                 triggerAbility2()
-                local Tween = TweenService:Create(JinpachiTurnCd, Ab2Cd, Goal)
-                Tween:Play()
+                Cooldown(JinpachiTurnCd, Ab2Cd)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -353,8 +351,7 @@ local function initializeAbility()
     Clone3.Activated:Connect(function()
         if Ab3 == false then
                 triggerAbility3()
-                local Tween = TweenService:Create(MetavisionCd, Ab3Cd, Goal)
-                Tween:Play()
+                Cooldown(MetavisionCd, Ab3Cd)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -367,8 +364,7 @@ local function initializeAbility()
         -- Trigger the Satoru Shot ability when the button is clicked
         if Ab4 == false then
                 triggerAbility4()
-                local Tween = TweenService:Create(SatoruShotCd, Ab4Cd, Goal)
-                Tween:Play()
+                Cooldown(SatoruShot, Ab4Cd)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
@@ -384,8 +380,7 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             if Ab1 == false then
                 triggerAbility1()
-                local Tween = TweenService:Create(FakeHeelFlickCd, Ab1Cd, Goal)
-                Tween:Play()
+                Cooldown(FakeHeelFlickCd, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -398,8 +393,7 @@ local function initializeAbility()
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2()
-                local Tween = TweenService:Create(JinpachiTurnCd, Ab2Cd, Goal)
-                Tween:Play()
+                Cooldown(JinpachiTurnCd, Ab2Cd)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -412,8 +406,7 @@ local function initializeAbility()
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
                 triggerAbility3()
-                local Tween = TweenService:Create(MetavisionCd, Ab3Cd, Goal)
-                Tween:Play()
+                Cooldown(MetavisionCd, Ab3Cd)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -426,8 +419,7 @@ local function initializeAbility()
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4()
-                local Tween = TweenService:Create(SatoruShotCd, Ab4Cd, Goal)
-                Tween:Play()
+                Cooldown(SatoruShotCd, Ab4Cd)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
@@ -448,4 +440,8 @@ end)
 cleanup()
 if player.Character then
     initializeAbility()
+end
+
+function Cooldown(ability, cooldown)
+    local Tween = TweenService:Create(ability, cooldown, Goal)
 end
