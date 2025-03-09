@@ -301,12 +301,9 @@ local function initializeAbility()
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
-        if Ab1CdV == false then
-            triggerAbility1()
-            Ab1CdV = true
-            Clone1.Cooldown.UIGradient.Offset.Y = 0
-            
-        end
+        triggerAbility1()
+        Ab1CdV = true
+        Clone1.Cooldown.UIGradient.Offset.Y = 0    
     end)
 
     Clone2.Activated:Connect(function()
