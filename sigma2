@@ -253,7 +253,7 @@ local function initializeAbility()
         sound4:Play()
         local Metavision = true
         while Metavision == true do
-            player.Character.Humanoid.WalkSpeed == 42
+            player.Character.Humanoid.WalkSpeed = 42
         end
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
         setScreenColor(Color3.new(0, 0, 1))
