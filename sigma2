@@ -280,7 +280,7 @@ local function initializeAbility()
     Clone1.Name = "FakeHeelFlickButton"
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -4
-    Clone1.Keybind.Text = "Z"
+    Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
     Clone1.Cooldown:Destroy()
@@ -289,7 +289,7 @@ local function initializeAbility()
     Clone2.Name = "JinpachiTurnButton"
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
-    Clone2.Keybind.Text = "X"
+    Clone2.Keybind.Text = "Z"
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
     Clone2.Cooldown:Destroy()
