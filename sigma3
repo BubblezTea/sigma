@@ -1,11 +1,3 @@
-game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Join PresidentZuyi Hub For Updates!",
-    Text = "Made By PresidentZuyi",
-    Button1 = "W Zuyi!",
-    Button2 = "W Zuyi!",
-    Duration = 90
-})
-
 local player = game:GetService("Players").LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local st = player.PlayerGui:WaitForChild("Style").BG.StyleTxt
@@ -107,9 +99,9 @@ spawn(updateOutlineColor)
 
 -- Update the style name and description
 while wait() do
-    st.Text = "Ego Jinpachi"
-    st.TextColor3 = Color3.fromRGB(255, 192, 203)
-    Slot.Text = "Ego Jinpachi"
-    Slot.TextColor3 = Color3.fromRGB(255, 192, 203)
+    st.Text = "Kaiser"
+    st.TextColor3 = Color3.fromRGB(135 206 250)
+    Slot.Text = "Kaiser"
+    Slot.TextColor3 = Color3.fromRGB(255, 255, 255)
     des.Text = "Noel Noas First Ever Rival And The Creator Of Blue Lock Project - Made By PresidentZuyi"
 end
