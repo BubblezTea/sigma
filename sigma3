@@ -8,8 +8,8 @@ local des = player.PlayerGui.Style.BG.Desc
 local function createRedTail()
     local trail = Instance.new("Trail")
     trail.Color = ColorSequence.new({
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 192, 203)),   -- Dark Red
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 192, 203))    -- Red
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(135, 206, 250)),   -- Dark Red
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 255, 255))    -- Red
     })
     trail.LightEmission = 1
     trail.Transparency = NumberSequence.new(0.1, 0.5) -- Gradual fade out effect
@@ -32,39 +32,6 @@ end
 
 -- Call the function to create the red tail effect
 createRedTail()
-
--- Create a ScreenGui
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-
--- Create a Frame for the notification
-local notificationFrame = Instance.new("Frame")
-notificationFrame.Size = UDim2.new(0, 200, 0, 50)
-notificationFrame.Position = UDim2.new(0.5, -100, 0.1, 0)
-notificationFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30) -- Dark grey background
-notificationFrame.BorderSizePixel = 0
-notificationFrame.Parent = screenGui
-notificationFrame.Active = true
-notificationFrame.Draggable = true
-notificationFrame.AnchorPoint = Vector2.new(0.5, 0)
-
--- Create a UICorner to make the corners rounded
-local uiCorner = Instance.new("UICorner")
-uiCorner.CornerRadius = UDim.new(0, 10)
-uiCorner.Parent = notificationFrame
-
--- Create an outline frame for the rainbow effect
-local outlineFrame = Instance.new("Frame")
-outlineFrame.Size = UDim2.new(1, 10, 1, 10)
-outlineFrame.Position = UDim2.new(0, -5, 0, -5)
-outlineFrame.BackgroundTransparency = 1
-outlineFrame.BorderSizePixel = 3
-outlineFrame.Parent = notificationFrame
-
--- Create a UICorner for the outline frame
-local outlineCorner = Instance.new("UICorner")
-outlineCorner.CornerRadius = UDim.new(0, 12)
-outlineCorner.Parent = outlineFrame
 
 -- Create a function to generate a rainbow color
 local function getRainbowColor(frequency)
@@ -92,5 +59,5 @@ while wait() do
     st.TextColor3 = Color3.fromRGB(135, 206, 250)
     Slot.Text = "Kaiser"
     Slot.TextColor3 = Color3.fromRGB(255, 255, 255)
-    des.Text = "Noel Noas First Ever Rival And The Creator Of Blue Lock Project - Made By PresidentZuyi"
+    des.Text = "Kaiser Impact!"
 end
