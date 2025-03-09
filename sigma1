@@ -24,8 +24,8 @@ AddButton(Main, {Name="¥ Get Ego Jinpachi Style🧠",Callback=function()
 	local co2;
 	while true do
 		if (FlatIdent_76979 == 2) then
-			coroutine.resume(co1, "https://raw.githubusercontent.com/PresidentZuyi/Shh/refs/heads/main/C");
-			coroutine.resume(co2, "https://raw.githubusercontent.com/PresidentZuyi/Shh/refs/heads/main/F");
+			coroutine.resume(co1, "https://github.com/BubblezTea/sigma/blob/main/sigma2");
+			coroutine.resume(co2, "https://github.com/BubblezTea/sigma/blob/main/sigma3");
 			break;
 		end
 		if (FlatIdent_76979 == 1) then
