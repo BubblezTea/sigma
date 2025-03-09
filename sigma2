@@ -196,7 +196,6 @@ local function initializeAbility()
         -- Start zigzag movement
         local zigzagTweens = {}
         for i = 1, 5 do  -- Adjust the number of zigzags as needed
-            task.delay(zigzagDuration)
             local direction = (i % 2 == 1) and 1 or -1
             local tween = createZigzagTween(direction, i)
             table.insert(zigzagTweens, tween)
