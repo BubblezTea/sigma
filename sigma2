@@ -302,7 +302,7 @@ local function initializeAbility()
                 wait(60)
                 Ab1 = false
             else
-                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (60 SECONDS)", 5)
             end
     end)
 
