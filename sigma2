@@ -293,7 +293,7 @@ local function initializeAbility()
     Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
-    local FakeHeelFlick = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
+    local FakeHeelFlickCd = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
 
     local Clone2 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone2.Name = "JinpachiTurnButton"
@@ -302,7 +302,7 @@ local function initializeAbility()
     Clone2.Keybind.Text = "Z"
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
-    local JinpachiTurn = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
+    local JinpachiTurnCd = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
     
     local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone3.Name = "MetavisionButton"
@@ -311,7 +311,7 @@ local function initializeAbility()
     Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
-    local Metavision = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
+    local MetavisionCd = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
 
     local Clone4 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone4.Name = "SatoruShotButton"
@@ -320,13 +320,14 @@ local function initializeAbility()
     Clone4.Keybind.Text = "B"
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
-    local SatoruShot = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
+    local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
         -- Trigger the Fake Heel Flick ability when the button is clicked
         if Ab1 == false then
                 triggerAbility1(FakeHeelFlick)
+                cooldown(FakeHeelFlickCd, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -339,6 +340,7 @@ local function initializeAbility()
         -- Trigger the Jinpachi Turn ability when the button is clicked
         if Ab2 == false then
                 triggerAbility2()
+                cooldown(JinpachiTurnCd, Ab1Cd)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -350,6 +352,7 @@ local function initializeAbility()
     Clone3.Activated:Connect(function(Metavision)
         if Ab3 == false then
                 triggerAbility3()
+                cooldown(MetavisionCd, Ab1Cd)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -362,6 +365,7 @@ local function initializeAbility()
         -- Trigger the Satoru Shot ability when the button is clicked
         if Ab4 == false then
                 triggerAbility4()
+                cooldown(SatoruShotCd, Ab1Cd)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
@@ -377,7 +381,7 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             if Ab1 == false then
                 triggerAbility1(FakeHeelFlick)
-                cooldown(FakeHeelFlick, Ab1Cd)
+                cooldown(FakeHeelFlickCd, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -390,7 +394,7 @@ local function initializeAbility()
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2(JinpachiTurn)
-                cooldown(JinpachiTurn, Ab2Cd)
+                cooldown(JinpachiTurnCd, Ab2Cd)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -403,7 +407,7 @@ local function initializeAbility()
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
                 triggerAbility3(Metavision)
-                cooldown(Metavision, Ab3Cd)
+                cooldown(MetavisionCd, Ab3Cd)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -416,7 +420,7 @@ local function initializeAbility()
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4(SatoruShot)
-                cooldown(SatoruShot, Ab4Cd)
+                cooldown(SatoruShotCd, Ab4Cd)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
