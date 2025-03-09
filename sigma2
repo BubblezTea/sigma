@@ -148,8 +148,8 @@ local function initializeAbility()
         
         -- Zigzag movement variables
         local zigzagDuration = 0.25  -- Duration for faster movement
-        local zigzagDistance = 15  -- Distance for more noticeable zigzag
-        local forwardForce = 24  -- Forward force
+        local zigzagDistance = 10  -- Distance for more noticeable zigzag
+        local forwardForce = 48  -- Forward force
 
         -- Create tweens for zigzag movement
         local function createZigzagTween(direction, index)
