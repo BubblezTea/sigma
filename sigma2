@@ -251,10 +251,6 @@ local function initializeAbility()
     local function triggerAbility3()
         sound4:Play()
         local Metavision = true
-        while Metavision == true do
-            player.Character.Humanoid.WalkSpeed = 42
-            wait(0.01)
-        end
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
         setScreenColor(Color3.new(0, 0, 1))
         delay(5, function()
@@ -266,6 +262,10 @@ local function initializeAbility()
             player.Character.Humanoid.WalkSpeed -= 6
         end)
     end
+        while Metavision == true do
+            player.Character.Humanoid.WalkSpeed = 42
+            wait(0.01)
+        end
 
     local function triggerAbility4()
         -- Play the sound at the start of the move
