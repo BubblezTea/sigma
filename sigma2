@@ -254,6 +254,7 @@ local function initializeAbility()
         local Metavision = true
         while Metavision == true do
             player.Character.Humanoid.WalkSpeed = 42
+            wait(0.01)
         end
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
         setScreenColor(Color3.new(0, 0, 1))
