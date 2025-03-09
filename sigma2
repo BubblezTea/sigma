@@ -227,9 +227,11 @@ local function initializeAbility()
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
         bodyVelocity.MaxForce = Vector3.new(1000000, 0, 1000000)
         bodyVelocity.Parent = humanoidRootPart
+        local power =  math.random(0.5, 3)
 
         -- Remove the force after a short duration
-        game.Debris:AddItem(bodyVelocity, math.random(0.5, 3))
+        game.Debris:AddItem(bodyVelocity, power)
+        print(power)
 
         -- Play the sound at the start of the move
         sound2:Play()
