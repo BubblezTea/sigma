@@ -18,7 +18,7 @@ local info4 = TweenInfo.new(Ab4Cd)
 
 local Goal = {Offset = Vector2.new(0, 1)}
 
-local strength = 225
+local strength = 175
 
 local function cleanup()
     -- Remove any existing cloned ability buttons
@@ -235,7 +235,7 @@ local function initializeAbility()
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
         bodyVelocity.MaxForce = Vector3.new(1000000, 0, 1000000)
         bodyVelocity.Parent = humanoidRootPart
-        local power =  math.random(0.5, 3)
+        local power =  math.random(-0.5, 1.5)
 
         -- Remove the force after a short duration
         game.Debris:AddItem(bodyVelocity, power)
