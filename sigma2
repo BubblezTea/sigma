@@ -380,6 +380,7 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             if Ab1 == false then
                 triggerAbility1()
+                local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -392,6 +393,7 @@ local function initializeAbility()
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2()
+                local Tween2 = TweenService:Create(Cooldown2, info2, Goal)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -404,6 +406,7 @@ local function initializeAbility()
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
                 triggerAbility3()
+                local Tween3 = TweenService:Create(Cooldown3, info3, Goal)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -416,6 +419,7 @@ local function initializeAbility()
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4()
+                local Tween4 = TweenService:Create(Cooldown4, info4, Goal)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
