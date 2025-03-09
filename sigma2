@@ -36,10 +36,7 @@ local function initializeAbility()
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
-    print(humanoid)
-
-    -- The animation for the dribble/drive move
+    
     local animation1 = Instance.new("Animation")
     animation1.AnimationId = "rbxassetid://99916870664377"  -- Replace with your desired animation ID
     local animationTrack1 = humanoid:LoadAnimation(animation1)
