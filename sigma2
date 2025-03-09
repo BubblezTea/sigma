@@ -1,4 +1,9 @@
-1local player = game.Players.LocalPlayer
+local player = game.Players.LocalPlayer
+
+local Ab1 = false
+local Ab2 = false
+local Ab3 = false
+local Ab4 = false
 
 local function cleanup()
     -- Remove any existing cloned ability buttons
@@ -291,22 +296,49 @@ local function initializeAbility()
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
         -- Trigger the Fake Heel Flick ability when the button is clicked
-        triggerAbility1()
+        if Ab1 == false then
+                triggerAbility1()
+                Ab1 = true
+                wait(120)
+                Ab1 = false
+            else
+                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+            end
     end)
 
     Clone2.Activated:Connect(function()
         -- Trigger the Jinpachi Turn ability when the button is clicked
-        triggerAbility2()
+        if Ab2 == false then
+                triggerAbility2()
+                Ab2 = true
+                wait(30)
+                Ab2 = false
+            else
+                displayAbilityText("ON COOLDOWN (30 SECONDS)", 5)
+            end
     end)
 
     Clone3.Activated:Connect(function()
-        -- Trigger the Metavision ability when the button is clicked
-        triggerAbility3()
+        if Ab3 == false then
+                triggerAbility3()
+                Ab3 = true
+                wait(15)
+                Ab3 = false
+            else
+                displayAbilityText("ON COOLDOWN (15 SECONDS)", 5)
+            end
     end)
 
     Clone4.Activated:Connect(function()
         -- Trigger the Satoru Shot ability when the button is clicked
-        triggerAbility4()
+        if Ab4 == false then
+                triggerAbility4()
+                Ab4 = true
+                wait(120)
+                Ab4 = false
+            else
+                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+            end
     end)
 
     -- Listen for the key presses (PC input)
@@ -314,23 +346,50 @@ local function initializeAbility()
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
 
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
-            -- Trigger the Fake Heel Flick ability when the "Y" key is pressed
-            triggerAbility1()
+            if Ab1 == false then
+                triggerAbility1()
+                Ab1 = true
+                wait(120)
+                Ab1 = false
+            else
+                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+            end
         end
 
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.N then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
-            triggerAbility2()
+            if Ab2 == false then
+                triggerAbility2()
+                Ab2 = true
+                wait(30)
+                Ab2 = false
+            else
+                displayAbilityText("ON COOLDOWN (30 SECONDS)", 5)
+            end
         end
 
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.V then
             -- Trigger the Metavision ability when the "V" key is pressed
-            triggerAbility3()
+            if Ab3 == false then
+                triggerAbility3()
+                Ab3 = true
+                wait(15)
+                Ab3 = false
+            else
+                displayAbilityText("ON COOLDOWN (15 SECONDS)", 5)
+            end
         end
 
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.T then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
-            triggerAbility4()
+            if Ab4 == false then
+                triggerAbility4()
+                Ab4 = true
+                wait(120)
+                Ab4 = false
+            else
+                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+            end
         end
     end)
 end
