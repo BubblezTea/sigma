@@ -10,6 +10,13 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
+local Ab1KyBind = Z
+local Ab2KyBind = X
+local Ab3KyBind = F
+local Ab4KyBind = LeftAlt
+
+local strength = 150
+
 local function cleanup()
     -- Remove any existing cloned ability buttons
     for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton"}) do
@@ -194,10 +201,11 @@ local function displayCoolDown(text, duration)
 
         -- Start zigzag movement
         local zigzagTweens = {}
-        for i = 1, 10 do  -- Adjust the number of zigzags as needed
+        for i = 1, math.random(1, 5) do  -- Adjust the number of zigzags as needed
             local direction = (i % 2 == 1) and 1 or -1
             local tween = createZigzagTween(direction, i)
             table.insert(zigzagTweens, tween)
+            wait(zigzagDuration)
         end
 
         -- Play the zigzag tweens sequentially
@@ -267,7 +275,7 @@ local function displayCoolDown(text, duration)
         -- Fire the ball after the animation finishes
         animationTrack3.Stopped:Connect(function()
             local args = {
-                [1] = 148,  -- Adjust force as necessary
+                [1] = strength,  -- Adjust force as necessary
             }
             game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
         end)
@@ -278,7 +286,7 @@ local function displayCoolDown(text, duration)
     Clone1.Name = "FakeHeelFlickButton"
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -4
-    Clone1.Keybind.Text = "Y"
+    Clone1.Keybind.Text = Ab1Kybind
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
     Clone1.Cooldown:Destroy()
@@ -287,7 +295,7 @@ local function displayCoolDown(text, duration)
     Clone2.Name = "JinpachiTurnButton"
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
-    Clone2.Keybind.Text = "N"
+    Clone2.Keybind.Text = Ab2Kybind
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
     Clone2.Cooldown:Destroy()
@@ -296,7 +304,7 @@ local function displayCoolDown(text, duration)
     Clone3.Name = "MetavisionButton"
     Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone3.LayoutOrder = -3
-    Clone3.Keybind.Text = "V"
+    Clone3.Keybind.Text = Ab3Kybind
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
     Clone3.Cooldown:Destroy()
@@ -305,7 +313,7 @@ local function displayCoolDown(text, duration)
     Clone4.Name = "SatoruShotButton"
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
-    Clone4.Keybind.Text = "T"
+    Clone4.Keybind.Text = Ab4Kybind
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
     Clone4.Cooldown:Destroy()
@@ -362,50 +370,50 @@ local function displayCoolDown(text, duration)
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab1Kybind then
             if Ab1 == false then
                 triggerAbility1()
                 Ab1 = true
-                wait(120)
+                wait(Ab1Cd)
                 Ab1 = false
             else
-                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab1Cd .. " SECONDS)", 5)
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.N then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab2Kybind then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2()
                 Ab2 = true
-                wait(30)
+                wait(Ab2Cd)
                 Ab2 = false
             else
-                displayAbilityText("ON COOLDOWN (30 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab2Cd .. " SECONDS)", 5)
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.V then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab3Kybind then
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
                 triggerAbility3()
                 Ab3 = true
-                wait(15)
+                wait(Ab3Cd)
                 Ab3 = false
             else
-                displayAbilityText("ON COOLDOWN (15 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab3Cd .. " SECONDS)", 5)
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.T then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Ab4Kybind then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4()
                 Ab4 = true
-                wait(120)
+                wait(Ab4Cd)
                 Ab4 = false
             else
-                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab4Cd .. " SECONDS)", 5)
             end
         end
     end)
