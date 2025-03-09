@@ -364,7 +364,7 @@ local function initializeAbility()
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Z then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             if Ab1 == false then
                 triggerAbility1()
                 Ab1 = true
@@ -375,7 +375,7 @@ local function initializeAbility()
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.B then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Z then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2()
@@ -399,7 +399,7 @@ local function initializeAbility()
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.B then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4()
