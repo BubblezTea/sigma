@@ -201,7 +201,7 @@ local function displayCoolDown(text, duration)
 
         -- Start zigzag movement
         local zigzagTweens = {}
-        for i = 1, math.random(1, 5) do  -- Adjust the number of zigzags as needed
+        for i = 1, 5 do  -- Adjust the number of zigzags as needed
             local direction = (i % 2 == 1) and 1 or -1
             local tween = createZigzagTween(direction, i)
             table.insert(zigzagTweens, tween)
