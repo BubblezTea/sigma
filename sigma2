@@ -170,7 +170,6 @@ local function initializeAbility()
     local function triggerAbility1()
         -- Play the sound at the start of the move
         sound1:Play()
-        local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
 
         -- Start the animation immediately (dribble animation)
         animationTrack1:Play()
