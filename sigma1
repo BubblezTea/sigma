@@ -96,7 +96,7 @@ AddButton(Important, {Name="¥ Infinite Jump",Callback=function()
 	while true do
 		if (FlatIdent_1743D == 0) then
 			InfiniteJumpEnabled = true;
-			game:GetService("UserInputService").JumpRequest:connect(function()
+			game:GetService("UserInputService").JumpRequest:Connect(function()
 				if InfiniteJumpEnabled then
 					game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):ChangeState("Jumping");
 				end
