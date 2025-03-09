@@ -10,7 +10,7 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
-local strength = 150
+local strength = 225
 
 local function cleanup()
     -- Remove any existing cloned ability buttons
