@@ -100,7 +100,7 @@ spawn(updateOutlineColor)
 -- Update the style name and description
 while wait() do
     st.Text = "Kaiser"
-    st.TextColor3 = Color3.fromRGB(135 206 250)
+    st.TextColor3 = Color3.fromRGB(135, 206, 250)
     Slot.Text = "Kaiser"
     Slot.TextColor3 = Color3.fromRGB(255, 255, 255)
     des.Text = "Noel Noas First Ever Rival And The Creator Of Blue Lock Project - Made By PresidentZuyi"
