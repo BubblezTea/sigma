@@ -445,4 +445,5 @@ end
 function Cooldown(ability, cooldown)
     local Info = TweenInfo.new(cooldown)
     local Tween = TweenService:Create(ability, Info, Goal)
+    Tween:Play()
 end
