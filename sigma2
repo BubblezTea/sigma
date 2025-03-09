@@ -8,7 +8,7 @@ local Ab4 = false
 
 local Ab1Cd = 60
 local Ab2Cd = 30
-local Ab3Cd = 5
+local Ab3Cd = 30
 local Ab4Cd = 60
 
 local strength = 175
