@@ -1,4 +1,5 @@
 local player = game.Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
 
 local Ab1 = false
 local Ab2 = false
@@ -9,6 +10,13 @@ local Ab1Cd = 60
 local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
+
+local info1 = TweenInfo.new(Ab1Cd)
+local info2 = TweenInfo.new(Ab2Cd)
+local info3 = TweenInfo.new(Ab3Cd)
+local info4 = TweenInfo.new(Ab4Cd)
+
+local Goal = {Offset = Vector2.new(0, 1)}
 
 local strength = 225
 
@@ -284,6 +292,7 @@ local function initializeAbility()
     Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
+    local Cooldown1 = Player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
 
     local Clone2 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone2.Name = "JinpachiTurnButton"
@@ -292,7 +301,8 @@ local function initializeAbility()
     Clone2.Keybind.Text = "Z"
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
-
+    local Cooldown2 = Player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
+    
     local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone3.Name = "MetavisionButton"
     Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
@@ -300,6 +310,7 @@ local function initializeAbility()
     Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
+    local Cooldown3 = Player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
 
     local Clone4 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone4.Name = "SatoruShotButton"
@@ -308,12 +319,14 @@ local function initializeAbility()
     Clone4.Keybind.Text = "B"
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
+    local Cooldown4 = Player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
         -- Trigger the Fake Heel Flick ability when the button is clicked
         if Ab1 == false then
                 triggerAbility1()
+                local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -326,6 +339,7 @@ local function initializeAbility()
         -- Trigger the Jinpachi Turn ability when the button is clicked
         if Ab2 == false then
                 triggerAbility2()
+                local Tween2 = TweenService:Create(Cooldown2, info2, Goal)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -337,6 +351,7 @@ local function initializeAbility()
     Clone3.Activated:Connect(function()
         if Ab3 == false then
                 triggerAbility3()
+                local Tween3 = TweenService:Create(Cooldown3, info3, Goal)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -349,6 +364,7 @@ local function initializeAbility()
         -- Trigger the Satoru Shot ability when the button is clicked
         if Ab4 == false then
                 triggerAbility4()
+                local Tween4 = TweenService:Create(Cooldown4, info4, Goal)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
