@@ -230,7 +230,7 @@ local function initializeAbility()
         bodyVelocity.Parent = humanoidRootPart
 
         -- Remove the force after a short duration
-        game.Debris:AddItem(bodyVelocity, math.random(0.5, 3)
+        game.Debris:AddItem(bodyVelocity, math.random(0.5, 3))
 
         -- Play the sound at the start of the move
         sound2:Play()
