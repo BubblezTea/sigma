@@ -307,7 +307,7 @@ local function initializeAbility()
     Clone4.Name = "SatoruShotButton"
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
-    Clone4.Keybind.Text = "F"
+    Clone4.Keybind.Text = "B"
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
     Clone4.Cooldown:Destroy()
