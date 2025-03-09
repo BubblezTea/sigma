@@ -1,10 +1,5 @@
 local player = game.Players.LocalPlayer
 
-local Ab1 = false
-local Ab2 = false
-local Ab3 = false
-local Ab4 = false
-
 local function cleanup()
     -- Remove any existing cloned ability buttons
     for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton"}) do
@@ -139,7 +134,6 @@ local function initializeAbility()
 
     -- Function to trigger the Fake Heel Flick ability
     local function triggerAbility1()
-        
         -- Play the sound at the start of the move
         sound1:Play()
 
@@ -148,9 +142,9 @@ local function initializeAbility()
         animationTrack1:AdjustSpeed(1.5)  -- Increase animation speed
         
         -- Zigzag movement variables
-        local zigzagDuration = 1  -- Duration for faster movement
-        local zigzagDistance = 25  -- Distance for more noticeable zigzag
-        local forwardForce = 14  -- Forward force
+        local zigzagDuration = 0.25  -- Duration for faster movement
+        local zigzagDistance = 10  -- Distance for more noticeable zigzag
+        local forwardForce = 48  -- Forward force
 
         -- Create tweens for zigzag movement
         local function createZigzagTween(direction, index)
@@ -296,8 +290,8 @@ local function initializeAbility()
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
+        -- Trigger the Fake Heel Flick ability when the button is clicked
         triggerAbility1()
-        Ab1CdV = true
     end)
 
     Clone2.Activated:Connect(function()
