@@ -159,7 +159,7 @@ local function displayCoolDown(text, duration)
 
         -- Remove the text after the specified duration
         game:GetService("Debris"):AddItem(screenGui, duration)
-    end
+    end)
 
     -- Function to set the screen color
     local function setScreenColor(color)
