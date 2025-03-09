@@ -10,11 +10,6 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
-local Ab1KyBind = Enum.KeyCode.Z
-local Ab2KyBind = Enum.KeyCode.X
-local Ab3KyBind = Enum.KeyCode.F
-local Ab4KyBind = Enum.KeyCode.LeftAlt
-
 local strength = 150
 
 local function cleanup()
@@ -369,7 +364,7 @@ local function initializeAbility()
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab1Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Z then
             if Ab1 == false then
                 triggerAbility1()
                 Ab1 = true
@@ -380,7 +375,7 @@ local function initializeAbility()
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab2Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.B then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
                 triggerAbility2()
@@ -392,7 +387,7 @@ local function initializeAbility()
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab4Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
                 triggerAbility3()
@@ -404,7 +399,7 @@ local function initializeAbility()
             end
         end
 
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Ab3Kybind then
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
                 triggerAbility4()
