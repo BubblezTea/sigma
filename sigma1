@@ -35,7 +35,7 @@ AddButton(Main, {Name="🌹 Micheal Kaiser 🌹",Callback=function()
 	while true do
 		if (FlatIdent_76979 == 2) then
 			coroutine.resume(co1, "https://raw.githubusercontent.com/BubblezTea/sigma/refs/heads/main/sigma2");
-			coroutine.resume(co2, "https://raw.githubusercontent.com/BubblezTea/sigma/refs/heads/main/sigma3);
+			coroutine.resume(co2, "https://raw.githubusercontent.com/BubblezTea/sigma/refs/heads/main/sigma3");
 			break;
 		end
 		if (FlatIdent_76979 == 1) then
