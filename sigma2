@@ -1,14 +1,9 @@
 local player = game.Players.LocalPlayer
 
-local Ab1Cd = 120
-local Ab2Cd = 5
-local Ab3Cd = 30
-local Ab4Cd = 60
-
-local Ab1CdV = false
-local Ab2CdV = false
-local Ab3CdV = false
-local Ab4CdV = false
+local Ab1 = false
+local Ab2 = false
+local Ab3 = false
+local Ab4 = false
 
 local function cleanup()
     -- Remove any existing cloned ability buttons
@@ -153,9 +148,9 @@ local function initializeAbility()
         animationTrack1:AdjustSpeed(1.5)  -- Increase animation speed
         
         -- Zigzag movement variables
-        local zigzagDuration = 0.25  -- Duration for faster movement
-        local zigzagDistance = 10  -- Distance for more noticeable zigzag
-        local forwardForce = 48  -- Forward force
+        local zigzagDuration = 1  -- Duration for faster movement
+        local zigzagDistance = 25  -- Distance for more noticeable zigzag
+        local forwardForce = 14  -- Forward force
 
         -- Create tweens for zigzag movement
         local function createZigzagTween(direction, index)
@@ -303,7 +298,6 @@ local function initializeAbility()
     Clone1.Activated:Connect(function()
         triggerAbility1()
         Ab1CdV = true
-        Clone1.Cooldown.UIGradient.Offset.Y = 0    
     end)
 
     Clone2.Activated:Connect(function()
