@@ -33,26 +33,6 @@ end
 -- Call the function to create the red tail effect
 createRedTail()
 
--- Create a function to generate a rainbow color
-local function getRainbowColor(frequency)
-    local time = tick() * frequency
-    local red = math.sin(time) * 0.5 + 0.5
-    local green = math.sin(time + 2 * math.pi / 3) * 0.5 + 0.5
-    local blue = math.sin(time + 4 * math.pi / 3) * 0.5 + 0.5
-    return Color3.new(red, green, blue)
-end
-
--- Create a function to update the outline color
-local function updateOutlineColor()
-    while true do
-        outlineFrame.BorderColor3 = getRainbowColor(1)
-        wait(0.1)
-    end
-end
-
--- Start the outline color update loop
-spawn(updateOutlineColor)
-
 -- Update the style name and description
 while wait() do
     st.Text = "Kaiser"
