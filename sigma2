@@ -11,11 +11,6 @@ local Ab2Cd = 30
 local Ab3Cd = 5
 local Ab4Cd = 60
 
-local info1 = TweenInfo.new(Ab1Cd)
-local info2 = TweenInfo.new(Ab2Cd)
-local info3 = TweenInfo.new(Ab3Cd)
-local info4 = TweenInfo.new(Ab4Cd)
-
 local Goal = {Offset = Vector2.new(0, 1)}
 
 local strength = 175
@@ -175,6 +170,7 @@ local function initializeAbility()
     local function triggerAbility1()
         -- Play the sound at the start of the move
         sound1:Play()
+        local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
 
         -- Start the animation immediately (dribble animation)
         animationTrack1:Play()
@@ -229,13 +225,13 @@ local function initializeAbility()
     end
 
     -- Function to trigger the Jinpachi Turn ability
-    local function triggerAbility2()
+    local function triggerAbility2(Ability)
         -- Apply a forward force to the player
         local bodyVelocity = Instance.new("BodyVelocity")
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
         bodyVelocity.MaxForce = Vector3.new(1000000, 0, 1000000)
         bodyVelocity.Parent = humanoidRootPart
-        local power =  math.random(-0.5, 1.5)
+        local power =  1
 
         -- Remove the force after a short duration
         game.Debris:AddItem(bodyVelocity, power)
@@ -255,13 +251,17 @@ local function initializeAbility()
     -- Function to trigger the Metavision ability
     local function triggerAbility3()
         sound4:Play()
-        player.Character.Humanoid.WalkSpeed += 6
+        local Metavision = true
+        while Metavision == true do
+            player.Character.Humanoid.WalkSpeed == 42
+        end
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
         setScreenColor(Color3.new(0, 0, 1))
         delay(5, function()
             displayAbilityText("METAVISION ACTIVATED", 5)
         end)
         delay(10, function()
+            metavision = false
             setScreenColor(Color3.new(0.5, 0.5, 0.5))  -- Adjust to default lighting settings
             player.Character.Humanoid.WalkSpeed -= 6
         end)
@@ -292,7 +292,7 @@ local function initializeAbility()
     Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
-    local Cooldown1 = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
+    local FakeHeelFlick = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
 
     local Clone2 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone2.Name = "JinpachiTurnButton"
@@ -301,7 +301,7 @@ local function initializeAbility()
     Clone2.Keybind.Text = "Z"
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
-    local Cooldown2 = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
+    local JinpachiTurn = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
     
     local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone3.Name = "MetavisionButton"
@@ -310,7 +310,7 @@ local function initializeAbility()
     Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
-    local Cooldown3 = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
+    local Metavision = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
 
     local Clone4 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone4.Name = "SatoruShotButton"
@@ -319,15 +319,13 @@ local function initializeAbility()
     Clone4.Keybind.Text = "B"
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
-    local Cooldown4 = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
+    local SatoruShot = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
         -- Trigger the Fake Heel Flick ability when the button is clicked
         if Ab1 == false then
-                triggerAbility1()
-                local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
-                Tween1:Play()
+                triggerAbility1(FakeHeelFlick)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -336,12 +334,10 @@ local function initializeAbility()
             end
     end)
 
-    Clone2.Activated:Connect(function()
+    Clone2.Activated:Connect(function(JinpachiTurn)
         -- Trigger the Jinpachi Turn ability when the button is clicked
         if Ab2 == false then
                 triggerAbility2()
-                local Tween2 = TweenService:Create(Cooldown2, info2, Goal)
-                Tween2:Play()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -350,11 +346,9 @@ local function initializeAbility()
             end
     end)
 
-    Clone3.Activated:Connect(function()
+    Clone3.Activated:Connect(function(Metavision)
         if Ab3 == false then
                 triggerAbility3()
-                local Tween3 = TweenService:Create(Cooldown3, info3, Goal)
-                Tween3:Play()
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -363,12 +357,10 @@ local function initializeAbility()
             end
     end)
 
-    Clone4.Activated:Connect(function()
+    Clone4.Activated:Connect(function(SatoruShot)
         -- Trigger the Satoru Shot ability when the button is clicked
         if Ab4 == false then
                 triggerAbility4()
-                local Tween4 = TweenService:Create(Cooldown4, info4, Goal)
-                Tween4:Play()
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
@@ -383,9 +375,8 @@ local function initializeAbility()
 
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Y then
             if Ab1 == false then
-                triggerAbility1()
-                local Tween1 = TweenService:Create(Cooldown1, info1, Goal)
-                Tween1:Play()
+                triggerAbility1(FakeHeelFlick)
+                cooldown(FakeHeelFlick, Ab1Cd)
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
@@ -397,9 +388,8 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.Z then
             -- Trigger the Jinpachi Turn ability when the "N" key is pressed
             if Ab2 == false then
-                triggerAbility2()
-                local Tween2 = TweenService:Create(Cooldown2, info2, Goal)
-                Tween2:Play()
+                triggerAbility2(JinpachiTurn)
+                cooldown(JinpachiTurn, Ab2Cd)
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
@@ -411,9 +401,8 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
             -- Trigger the Metavision ability when the "V" key is pressed
             if Ab3 == false then
-                triggerAbility3()
-                local Tween3 = TweenService:Create(Cooldown3, info3, Goal)
-                Tween3:Play()
+                triggerAbility3(Metavision)
+                cooldown(Metavision, Ab3Cd)
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
@@ -425,9 +414,8 @@ local function initializeAbility()
         if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.B then
             -- Trigger the Satoru Shot ability when the "T" key is pressed
             if Ab4 == false then
-                triggerAbility4()
-                local Tween4 = TweenService:Create(Cooldown4, info4, Goal)
-                Tween4:Play()
+                triggerAbility4(SatoruShot)
+                cooldown(SatoruShot, Ab4Cd)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
@@ -448,4 +436,9 @@ end)
 cleanup()
 if player.Character then
     initializeAbility()
+end
+
+local function cooldown(ability, cooldown)
+    local Tween = TweenService:Create(ability, cooldown, Goal)
+    Tween:Play()
 end
