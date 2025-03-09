@@ -286,7 +286,7 @@ local function displayCoolDown(text, duration)
     Clone1.Name = "FakeHeelFlickButton"
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -4
-    Clone1.Keybind.Text = Z
+    Clone1.Keybind.Text = "Z"
     Clone1.Timer.Text = "Ego"
     Clone1.ActualTimer.Text = ""
     Clone1.Cooldown:Destroy()
@@ -295,7 +295,7 @@ local function displayCoolDown(text, duration)
     Clone2.Name = "JinpachiTurnButton"
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
-    Clone2.Keybind.Text = X
+    Clone2.Keybind.Text = "X"
     Clone2.Timer.Text = "Off the Ball"
     Clone2.ActualTimer.Text = ""
     Clone2.Cooldown:Destroy()
@@ -304,7 +304,7 @@ local function displayCoolDown(text, duration)
     Clone3.Name = "MetavisionButton"
     Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone3.LayoutOrder = -3
-    Clone3.Keybind.Text = LeftAlt
+    Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Metavision"
     Clone3.ActualTimer.Text = ""
     Clone3.Cooldown:Destroy()
@@ -313,7 +313,7 @@ local function displayCoolDown(text, duration)
     Clone4.Name = "SatoruShotButton"
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
-    Clone4.Keybind.Text = F
+    Clone4.Keybind.Text = "F"
     Clone4.Timer.Text = "Kaiser Impact"
     Clone4.ActualTimer.Text = ""
     Clone4.Cooldown:Destroy()
