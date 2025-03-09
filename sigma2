@@ -5,6 +5,11 @@ local Ab2 = false
 local Ab3 = false
 local Ab4 = false
 
+local Ab1Cd = 60
+local Ab2Cd = 30
+local Ab3Cd = 5
+local Ab4Cd = 60
+
 local function cleanup()
     -- Remove any existing cloned ability buttons
     for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton"}) do
@@ -130,6 +135,26 @@ local function initializeAbility()
         game:GetService("Debris"):AddItem(screenGui, duration)
     end
 
+local function displayCoolDown(text, duration)
+        local screenGui = Instance.new("ScreenGui")
+        screenGui.Name = "AbilityTextGui"
+        screenGui.Parent = player.PlayerGui
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Name = "AbilityTextLabel"
+        textLabel.Text = text
+        textLabel.Size = UDim2.new(0.5, 0, 0.1, 0)
+        textLabel.Position = UDim2.new(0.5, 0, 0, 0)
+        textLabel.TextScaled = true
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.new(1, 1, 1)
+        textLabel.Font = Enum.Font.SourceSansBold  -- Choose a good font
+        textLabel.Parent = screenGui
+
+        -- Remove the text after the specified duration
+        game:GetService("Debris"):AddItem(screenGui, duration)
+    end
+
     -- Function to set the screen color
     local function setScreenColor(color)
         local lighting = game:GetService("Lighting")
@@ -218,27 +243,19 @@ local function initializeAbility()
 
     -- Function to trigger the Metavision ability
     local function triggerAbility3()
-        -- Play the sound at the start of the move
         sound4:Play()
-
-        -- Display ability text
+        player.Character.Humanoid.WalkSpeed += 6
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
-
-        -- Set the screen color to blue
         setScreenColor(Color3.new(0, 0, 1))
-
-        -- After 5 seconds, display the "METAVISION ACTIVATED" text
         delay(5, function()
             displayAbilityText("METAVISION ACTIVATED", 5)
         end)
-
-        -- Revert the screen color back to normal after 10 seconds
         delay(10, function()
             setScreenColor(Color3.new(0.5, 0.5, 0.5))  -- Adjust to default lighting settings
+            player.Character.Humanoid.WalkSpeed -= 6
         end)
     end
 
-    -- Function to trigger the Satoru Shot ability
     local function triggerAbility4()
         -- Play the sound at the start of the move
         sound3:Play()
@@ -299,10 +316,10 @@ local function initializeAbility()
         if Ab1 == false then
                 triggerAbility1()
                 Ab1 = true
-                wait(60)
+                wait(Ab1Cd)
                 Ab1 = false
             else
-                displayAbilityText("ON COOLDOWN (60 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (".. Ab1Cd .." SECONDS)", 5)
             end
     end)
 
@@ -311,10 +328,10 @@ local function initializeAbility()
         if Ab2 == false then
                 triggerAbility2()
                 Ab2 = true
-                wait(30)
+                wait(Ab2Cd)
                 Ab2 = false
             else
-                displayAbilityText("ON COOLDOWN (30 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab2Cd .. " SECONDS)", 5)
             end
     end)
 
@@ -322,10 +339,10 @@ local function initializeAbility()
         if Ab3 == false then
                 triggerAbility3()
                 Ab3 = true
-                wait(15)
+                wait(Ab3Cd)
                 Ab3 = false
             else
-                displayAbilityText("ON COOLDOWN (15 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab3Cd .. " SECONDS)", 5)
             end
     end)
 
@@ -334,10 +351,10 @@ local function initializeAbility()
         if Ab4 == false then
                 triggerAbility4()
                 Ab4 = true
-                wait(120)
+                wait(Ab4Cd)
                 Ab4 = false
             else
-                displayAbilityText("ON COOLDOWN (120 SECONDS)", 5)
+                displayAbilityText("ON COOLDOWN (" .. Ab4Cd .. " SECONDS)", 5)
             end
     end)
 
