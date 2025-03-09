@@ -443,5 +443,6 @@ if player.Character then
 end
 
 function Cooldown(ability, cooldown)
-    local Tween = TweenService:Create(ability, cooldown, Goal)
+    local Info = TweenInfo.new(cooldown)
+    local Tween = TweenService:Create(ability, Info, Goal)
 end
