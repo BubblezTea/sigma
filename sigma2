@@ -137,26 +137,6 @@ local function initializeAbility()
         game:GetService("Debris"):AddItem(screenGui, duration)
     end
 
-    local function displayCoolDown(text, duration)
-        local screenGui = Instance.new("ScreenGui")
-        screenGui.Name = "AbilityTextGui"
-        screenGui.Parent = player.PlayerGui
-
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Name = "AbilityTextLabel"
-        textLabel.Text = text
-        textLabel.Size = UDim2.new(0.5, 0, 0.1, 0)
-        textLabel.Position = UDim2.new(0.5, 0, 0, 0)
-        textLabel.TextScaled = true
-        textLabel.BackgroundTransparency = 1
-        textLabel.TextColor3 = Color3.new(1, 1, 1)
-        textLabel.Font = Enum.Font.SourceSansBold  -- Choose a good font
-        textLabel.Parent = screenGui
-
-        -- Remove the text after the specified duration
-        game:GetService("Debris"):AddItem(screenGui, duration)
-    end
-
     -- Function to set the screen color
     local function setScreenColor(color)
         local lighting = game:GetService("Lighting")
@@ -327,8 +307,6 @@ local function initializeAbility()
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
-            else
-                displayAbilityText("ON COOLDOWN (".. Ab1Cd .." SECONDS)", 5)
             end
     end)
 
@@ -340,8 +318,6 @@ local function initializeAbility()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab2Cd .. " SECONDS)", 5)
             end
     end)
 
@@ -352,8 +328,6 @@ local function initializeAbility()
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab3Cd .. " SECONDS)", 5)
             end
     end)
 
@@ -365,8 +339,6 @@ local function initializeAbility()
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab4Cd .. " SECONDS)", 5)
             end
     end)
 
@@ -381,8 +353,6 @@ local function initializeAbility()
                 Ab1 = true
                 wait(Ab1Cd)
                 Ab1 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab1Cd .. " SECONDS)", 5)
             end
         end
 
@@ -394,8 +364,6 @@ local function initializeAbility()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab2Cd .. " SECONDS)", 5)
             end
         end
 
@@ -407,8 +375,6 @@ local function initializeAbility()
                 Ab3 = true
                 wait(Ab3Cd)
                 Ab3 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab3Cd .. " SECONDS)", 5)
             end
         end
 
@@ -420,8 +386,6 @@ local function initializeAbility()
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
-            else
-                displayAbilityText("ON COOLDOWN (" .. Ab4Cd .. " SECONDS)", 5)
             end
         end
     end)
