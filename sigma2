@@ -1,5 +1,7 @@
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local AwakeningEvent = ReplicatedStorage.Packages.Knit.Services.AwakeningService.RE.StartAwakening
 
 local Ab1 = false
 local Ab2 = false
@@ -27,6 +29,14 @@ local function cleanup()
         player.PlayerGui.AbilityTextGui:Destroy()
     end
 end
+
+AwakeningEvent.OnClientEvent:Connect(function()
+    if player.PlayerStats.InAwakening then
+        Clone5.Visible = true
+    else
+        Clone5.Visible = false
+    end
+end)
 
 local function initializeAbility()
     local character = player.Character or player.CharacterAdded:Wait()
@@ -233,7 +243,7 @@ local function initializeAbility()
     local function triggerAbility3()
         sound4:Play()
         local Metavision = true
-        displayAbilityText("Get On Your Knees, Blue Lock.", 5)
+        displayAbilityText("We will NOT GO DOWN WITHOUT A FIGHT!", 5)
         setScreenColor(Color3.new(0.98, 0.72, 0.12))
         delay(5, function()
             displayAbilityText("WILLPOWER ACTIVATED", 5)
@@ -263,6 +273,72 @@ local function initializeAbility()
             }
             game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
         end)
+    end
+
+    local function triggerAbility5()
+        sound3:Play()
+        local Untouchable = true
+        -- Play the sound at the start of the move
+
+        -- Start the animation immediately (dribble animation)
+        animationTrack1:Play()
+        animationTrack1:AdjustSpeed(1.5)  -- Increase animation speed
+        
+        -- Zigzag movement variables
+        local zigzagDuration = 0.25  -- Duration for faster movement
+        local zigzagDistance = 10  -- Distance for more noticeable zigzag
+        local forwardForce = 48  -- Forward force
+
+        -- Create tweens for zigzag movement
+        local function createZigzagTween(direction, index)
+            local forwardVector = humanoidRootPart.CFrame.LookVector
+            local rightVector = humanoidRootPart.CFrame.RightVector
+            local targetPosition = humanoidRootPart.Position + (forwardVector * (zigzagDistance * index) + direction * rightVector * zigzagDistance)
+            local targetCFrame = CFrame.new(targetPosition, targetPosition + forwardVector)  -- Ensure the player faces forward
+            local tweenInfo = TweenInfo.new(zigzagDuration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
+            local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = targetCFrame})
+            return tween
+        end
+
+        -- Enable visual effects
+        visualEffect.Enabled = true
+        coolEffect.Enabled = true
+        foggyAura.Enabled = true
+
+        -- Start zigzag movement
+        local zigzagTweens = {}
+        for i = 1, 20 do  -- Adjust the number of zigzags as needed
+            game.Players.LocalPlayer.PlayerStats.Stamina.Value -= 5
+            sound1:Play()
+            local direction = (i % 2 == 1) and 1 or -1
+            local tween = createZigzagTween(direction, i)
+            table.insert(zigzagTweens, tween)
+        end
+
+        -- Play the zigzag tweens sequentially
+        local function playZigzagTweens(index)
+            if index > #zigzagTweens then
+                -- Zigzag movement finished
+                visualEffect.Enabled = false
+                coolEffect.Enabled = false
+                foggyAura.Enabled = false
+                return
+            end
+            local currentTween = zigzagTweens[index]
+            currentTween:Play()
+            currentTween.Completed:Connect(function()
+                playZigzagTweens(index + 1)
+            end)
+        end
+
+        playZigzagTweens(1)
+        delay(20, function()
+                Untouchable = false
+        end)
+
+        while Untouchable = true do
+            player.Character.Humanoid.WalkSpeed = 88
+        end
     end
 
     -- Clone the ability buttons (for mobile or GUI use)
@@ -301,6 +377,16 @@ local function initializeAbility()
     Clone4.Timer.Text = "Blazing Impact"
     Clone4.ActualTimer.Text = ""
     local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
+
+    local Clone5 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
+    Clone5.Name = "UltimateButton"
+    Clone5.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
+    Clone5.LayoutOrder = -1
+    Clone5.Keybind.Text = "H"
+    Clone5.Timer.Text = "Can't Touch Me"
+    Clone5.ActualTimer.Text = ""
+    local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
+    Clone5.Visible = false
 
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
