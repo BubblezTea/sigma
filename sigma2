@@ -442,6 +442,7 @@ end
 function Cooldown(ability, cooldown)
     print(ability)
     print(cooldown)
+    ability.Offset = Vector2.new(0, 0)
     local Info = TweenInfo.new(cooldown)
     local Tween = TweenService:Create(ability, Info, {Offset = Vector2.new(0, 1)})
     Tween:Play()
