@@ -307,7 +307,7 @@ local function initializeAbility()
 
         -- Start zigzag movement
         local zigzagTweens = {}
-        for i = 1, 20 do  -- Adjust the number of zigzags as needed
+        for i = 1, 8 do  -- Adjust the number of zigzags as needed
             game.Players.LocalPlayer.PlayerStats.Stamina.Value -= 5
             sound1:Play()
             local direction = (i % 2 == 1) and 1 or -1
