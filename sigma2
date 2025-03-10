@@ -106,7 +106,7 @@ local function initializeAbility()
         for _, part in pairs(character:GetChildren()) do
             if part:IsA("BasePart") then
                 local originalColor = part.Color
-                part.Color = Color3.fromRGB(255, 0, 0)
+                part.Color = Color3.fromRGB(250, 184, 31)
 
                 -- Revert the color back after a short duration
                 delay(0.5, function()
@@ -250,9 +250,9 @@ local function initializeAbility()
         sound4:Play()
         local Metavision = true
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
-        setScreenColor(Color3.new(0, 0, 1))
+        setScreenColor(Color3.new(250, 184, 31))
         delay(5, function()
-            displayAbilityText("METAVISION ACTIVATED", 5)
+            displayAbilityText("WILLPOWER ACTIVATED", 5)
         end)
         delay(10, function()
             metavision = false
@@ -288,7 +288,7 @@ local function initializeAbility()
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -4
     Clone1.Keybind.Text = "Y"
-    Clone1.Timer.Text = "Ego"
+    Clone1.Timer.Text = "Blazing Dash"
     Clone1.ActualTimer.Text = ""
     local FakeHeelFlickCd = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
 
@@ -297,7 +297,7 @@ local function initializeAbility()
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
     Clone2.Keybind.Text = "Z"
-    Clone2.Timer.Text = "Off the Ball"
+    Clone2.Timer.Text = "Roulette"
     Clone2.ActualTimer.Text = ""
     local JinpachiTurnCd = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
     
@@ -306,7 +306,7 @@ local function initializeAbility()
     Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone3.LayoutOrder = -3
     Clone3.Keybind.Text = "LeftAlt"
-    Clone3.Timer.Text = "Metavision"
+    Clone3.Timer.Text = "Willpower"
     Clone3.ActualTimer.Text = ""
     local MetavisionCd = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
 
@@ -315,7 +315,7 @@ local function initializeAbility()
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
     Clone4.Keybind.Text = "B"
-    Clone4.Timer.Text = "Kaiser Impact"
+    Clone4.Timer.Text = "Blazing Impact"
     Clone4.ActualTimer.Text = ""
     local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
 
