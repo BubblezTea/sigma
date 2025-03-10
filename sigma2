@@ -6,10 +6,10 @@ local Ab2 = false
 local Ab3 = false
 local Ab4 = false
 
-local Ab1Cd = 60
-local Ab2Cd = 30
-local Ab3Cd = 30
-local Ab4Cd = 60
+local Ab1Cd = 90
+local Ab2Cd = 60
+local Ab3Cd = 60
+local Ab4Cd = 90
 
 local strength = 175
 
@@ -47,11 +47,11 @@ local function initializeAbility()
 
     -- Sound for the move
     local sound1 = Instance.new("Sound")
-    sound1.SoundId = "rbxassetid://17704386866"  -- Change the sound ID
+    sound1.SoundId = "rbxassetid://7128851174"  -- Change the sound ID
     sound1.Parent = humanoidRootPart  -- You can attach the sound to the character's root part
 
     local sound2 = Instance.new("Sound")
-    sound2.SoundId = "rbxassetid://5835032207"  -- Change the sound ID
+    sound2.SoundId = "rbxassetid://2674547670"  -- Change the sound ID
     sound2.Parent = humanoidRootPart  -- You can attach the sound to the character's root part
 
     local sound3 = Instance.new("Sound")
@@ -59,7 +59,7 @@ local function initializeAbility()
     sound3.Parent = humanoidRootPart  -- You can attach the sound to the character's root part
 
     local sound4 = Instance.new("Sound")
-    sound4.SoundId = "rbxassetid://112558145937517"  -- Change the sound ID
+    sound4.SoundId = "rbxassetid://3802269741"  -- Change the sound ID
     sound4.Parent = humanoidRootPart  -- Attach the sound to the character's root part
 
     -- Visual effect for the move
@@ -147,7 +147,6 @@ local function initializeAbility()
     -- Function to trigger the Fake Heel Flick ability
     local function triggerAbility1()
         -- Play the sound at the start of the move
-        sound1:Play()
 
         -- Start the animation immediately (dribble animation)
         animationTrack1:Play()
@@ -177,6 +176,7 @@ local function initializeAbility()
         -- Start zigzag movement
         local zigzagTweens = {}
         for i = 1, 5 do  -- Adjust the number of zigzags as needed
+            sound1:Play()
             local direction = (i % 2 == 1) and 1 or -1
             local tween = createZigzagTween(direction, i)
             table.insert(zigzagTweens, tween)
