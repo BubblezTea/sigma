@@ -257,11 +257,10 @@ local function initializeAbility()
         delay(10, function()
             metavision = false
             setScreenColor(Color3.new(0.5, 0.5, 0.5))  -- Adjust to default lighting settings
-            player.Character.Humanoid.WalkSpeed -= 6
         end)
     end
         while Metavision == true do
-            player.Character.Humanoid.WalkSpeed = 42
+            player.Character.Humanoid.WalkSpeed = 50
             wait(0.01)
         end
 
