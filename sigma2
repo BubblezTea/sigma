@@ -427,8 +427,6 @@ local function initializeAbility()
     end)
 end
 
-local Goal = {Offset = Vector2.new(0, 1)}
-
 -- Reinitialize the ability each time the character is added (e.g., when joining a match)
 player.CharacterAdded:Connect(function()
     cleanup()
@@ -445,6 +443,6 @@ function Cooldown(ability, cooldown)
     print(ability)
     print(cooldown)
     local Info = TweenInfo.new(cooldown)
-    local Tween = TweenService:Create(ability, Info, Goal)
+    local Tween = TweenService:Create(ability, Info, {Offset = Vector2.new(0, 1)
     Tween:Play()
 end
