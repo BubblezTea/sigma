@@ -55,7 +55,7 @@ local function initializeAbility()
     sound2.Parent = humanoidRootPart  -- You can attach the sound to the character's root part
 
     local sound3 = Instance.new("Sound")
-    sound3.SoundId = "rbxassetid://8789851536"  -- Change the sound ID
+    sound3.SoundId = "rbxassetid://2674547670"  -- Change the sound ID
     sound3.Parent = humanoidRootPart  -- You can attach the sound to the character's root part
 
     local sound4 = Instance.new("Sound")
