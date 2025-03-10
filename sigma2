@@ -250,7 +250,7 @@ local function initializeAbility()
         sound4:Play()
         local Metavision = true
         displayAbilityText("Get On Your Knees, Blue Lock.", 5)
-        setScreenColor(Color3.new(250, 184, 31))
+        setScreenColor(Color3.new(0.98, 0.72, 0.12))
         delay(5, function()
             displayAbilityText("WILLPOWER ACTIVATED", 5)
         end)
