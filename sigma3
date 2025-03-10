@@ -35,9 +35,9 @@ createRedTail()
 
 -- Update the style name and description
 while wait() do
-    st.Text = "Kaiser"
-    st.TextColor3 = Color3.fromRGB(135, 206, 250)
-    Slot.Text = "Kaiser"
+    st.Text = "Blaze"
+    st.TextColor3 = Color3.fromRGB(250, 184, 31)
+    Slot.Text = "Blaze"
     Slot.TextColor3 = Color3.fromRGB(255, 255, 255)
     player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.ImageColor3 = Color3.fromRGB(250, 125, 250)
     des.Text = "Kaiser Impact!"
