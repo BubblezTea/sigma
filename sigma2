@@ -176,6 +176,7 @@ local function initializeAbility()
         -- Start zigzag movement
         local zigzagTweens = {}
         for i = 1, 5 do  -- Adjust the number of zigzags as needed
+            game.Players.LocalPlayer.PlayerStats.Stamina.Value -= 5
             sound1:Play()
             local direction = (i % 2 == 1) and 1 or -1
             local tween = createZigzagTween(direction, i)
@@ -201,14 +202,17 @@ local function initializeAbility()
         playZigzagTweens(1)
     end
 
-    -- Function to trigger the Jinpachi Turn ability
+    -- Function to trigger the Roulette ability
     local function triggerAbility2()
         -- Apply a forward force to the player
         local bodyVelocity = Instance.new("BodyVelocity")
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
         bodyVelocity.MaxForce = Vector3.new(1000000, 0, 1000000)
         bodyVelocity.Parent = humanoidRootPart
-        local power =  1
+        local power =  math.random(0.5, 1.5)
+        print(power * 10)
+        game.Players.LocalPlayer.PlayerStats.Stamina.Value -= power * 10
+        
 
         -- Remove the force after a short duration
         game.Debris:AddItem(bodyVelocity, power)
