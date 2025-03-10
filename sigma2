@@ -374,7 +374,7 @@ local function initializeAbility()
     Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone4.LayoutOrder = -1
     Clone4.Keybind.Text = "B"
-    Clone4.Timer.Text = "Blazing Impact"
+    Clone4.Timer.Text = "Heated Impact"
     Clone4.ActualTimer.Text = ""
     local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
 
