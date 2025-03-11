@@ -40,9 +40,6 @@ local function initializeAbility()
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
-    player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
-    player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = false
     
     local animation1 = Instance.new("Animation")
     animation1.AnimationId = "rbxassetid://99916870664377"  -- Replace with your desired animation ID
@@ -454,6 +451,9 @@ local function initializeAbility()
                 Ab5 = false
             end
     end)
+
+     player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
+    player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = false
 
     -- Listen for the key presses (PC input)
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
