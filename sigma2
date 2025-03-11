@@ -332,6 +332,7 @@ local function initializeAbility()
 
         while Untouchable == true do
             player.Character.Humanoid.WalkSpeed = 88
+            wait(0.01)
         end
     end
 
@@ -385,9 +386,9 @@ local function initializeAbility()
      AwakeningEvent.OnClientEvent:Connect(function()
         if player.PlayerStats.InAwakening.Value == true then
             Clone5.Visible = true
-            Clone4.Visible = false
+            Clone1.Visible = false
         else
-            Clone4.Visible = true
+            Clone1.Visible = true
             Clone5.Visible = false
         end
     end)
