@@ -1,7 +1,7 @@
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local AwakeningEvent = ReplicatedStorage.Packages.Knit.Services.AwakeningService.RE.StartAwakening
+local AwakeningBar = player.PlayerStats.AwakeningBar
 
 local Ab1 = false
 local Ab2 = false
@@ -383,13 +383,13 @@ local function initializeAbility()
     local UltimateButtonCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
     Clone5.Visible = false
 
-     AwakeningEvent.OnClientEvent:Connect(function()
-        if player.PlayerStats.InAwakening.Value == true then
+    AwakeningStat.Changed:Connect(function()
+        if AwakeningStat.Value ~= 0 then
             Clone5.Visible = true
             Clone1.Visible = false
         else
-            Clone1.Visible = true
             Clone5.Visible = false
+            Clone1.Visible = true
         end
     end)
     
