@@ -340,7 +340,7 @@ local function initializeAbility()
     local Clone1 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone1.Name = "FakeHeelFlickButton"
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
-    Clone1.LayoutOrder = -4
+    Clone1.LayoutOrder = -3
     Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Blazing Dash"
     Clone1.ActualTimer.Text = ""
@@ -358,7 +358,7 @@ local function initializeAbility()
     local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone3.Name = "MetavisionButton"
     Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
-    Clone3.LayoutOrder = -3
+    Clone3.LayoutOrder = -5
     Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Willpower"
     Clone3.ActualTimer.Text = ""
@@ -376,7 +376,7 @@ local function initializeAbility()
     local Clone5 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone5.Name = "UltimateButton"
     Clone5.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
-    Clone5.LayoutOrder = -1
+    Clone5.LayoutOrder = -4
     Clone5.Keybind.Text = "H"
     Clone5.Timer.Text = "Can't Touch Me"
     Clone5.ActualTimer.Text = ""
