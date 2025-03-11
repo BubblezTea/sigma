@@ -253,7 +253,7 @@ local function initializeAbility()
     end
         while Metavision == true do
             player.Character.Humanoid.WalkSpeed = 50
-            wait(0.01)
+            wait(0.001)
         end
 
     local function triggerAbility4()
