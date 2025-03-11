@@ -452,7 +452,7 @@ local function initializeAbility()
             end
     end)
 
-     player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
+    player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
     player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = false
 
     -- Listen for the key presses (PC input)
@@ -520,6 +520,9 @@ player.CharacterAdded:Connect(function()
     cleanup()
     if SlotState.Text == "Equipped" then
         initializeAbility()
+    else
+        player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = true
+        player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = true
     end
 end)
 
@@ -528,6 +531,9 @@ cleanup()
 if player.Character then
     if SlotState.Text == "Equipped" then
         initializeAbility()
+    else
+        player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = true
+        player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = true
     end
 end
 
