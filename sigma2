@@ -382,15 +382,15 @@ local function initializeAbility()
     local UltimateButtonCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
     Clone5.Visible = false
 
-    AwakeningEvent.OnClientEvent:Connect(function()
-    if player.PlayerStats.InAwakening then
-        Clone5.Visible = true
-        Clone4.Visible = false
-    else
-        Clone4.Visible = true
-        Clone5.Visible = false
-    end
-end)
+     AwakeningEvent.OnClientEvent:Connect(function()
+        if player.PlayerStats.InAwakening.Value == true then
+            Clone5.Visible = true
+            Clone4.Visible = false
+        else
+            Clone4.Visible = true
+            Clone5.Visible = false
+        end
+    end)
     
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
