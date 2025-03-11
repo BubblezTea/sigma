@@ -1,8 +1,10 @@
 local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local AwakeningBar = player.PlayerStats.AwakeningBar
+local AwakeningBar = player.PlayerStats:WaitForChild("AwakeningBar")
 print(AwakeningBar.Value)
+print(AwakeningBar.Parent)
+print(AwakeningBar.Name)
 
 local Ab1 = false
 local Ab2 = false
@@ -281,7 +283,7 @@ local function initializeAbility()
         
         -- Zigzag movement variables
         local zigzagDuration = 0.25  -- Duration for faster movement
-        local zigzagDistance = 10  -- Distance for more noticeable zigzag
+        local zigzagDistance = 25  -- Distance for more noticeable zigzag
         local forwardForce = 48  -- Forward force
 
         -- Create tweens for zigzag movement
