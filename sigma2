@@ -348,6 +348,7 @@ local function initializeAbility()
     Clone1.Keybind.Text = "Y"
     Clone1.Timer.Text = "Blazing Dash"
     Clone1.ActualTimer.Text = ""
+    Clone1.Visible = true
     local FakeHeelFlickCd = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
 
     local Clone2 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
@@ -357,6 +358,7 @@ local function initializeAbility()
     Clone2.Keybind.Text = "Z"
     Clone2.Timer.Text = "Roulette"
     Clone2.ActualTimer.Text = ""
+    Clone2.Visible = true
     local JinpachiTurnCd = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
     
     local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
@@ -366,6 +368,7 @@ local function initializeAbility()
     Clone3.Keybind.Text = "LeftAlt"
     Clone3.Timer.Text = "Willpower"
     Clone3.ActualTimer.Text = ""
+    Clone3.Visible = true
     local MetavisionCd = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
 
     local Clone4 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
@@ -375,6 +378,7 @@ local function initializeAbility()
     Clone4.Keybind.Text = "B"
     Clone4.Timer.Text = "Heated Impact"
     Clone4.ActualTimer.Text = ""
+    Clone4.Visible = true
     local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
 
     local Clone5 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
