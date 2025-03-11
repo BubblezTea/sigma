@@ -217,7 +217,7 @@ local function initializeAbility()
         bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
         bodyVelocity.MaxForce = Vector3.new(1000000, 0, 1000000)
         bodyVelocity.Parent = humanoidRootPart
-        local power =  math.random(0.5, 1.5)
+        local power =  1
         print(power * 10)
         game.Players.LocalPlayer.PlayerStats.Stamina.Value -= power * 10
         
@@ -336,7 +336,7 @@ local function initializeAbility()
 
         while Untouchable == true do
             player.Character.Humanoid.WalkSpeed = 66
-            wait(0.01)
+            wait(0.001)
         end
     end
 
