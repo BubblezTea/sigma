@@ -19,7 +19,7 @@ local strength = 175
 
 local function cleanup()
     -- Remove any existing cloned ability buttons
-    for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton"}) do
+    for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton", "UltimateButton"}) do
         local button = player.PlayerGui.InGameUI.Bottom.Abilities:FindFirstChild(buttonName)
         if button then
             button:Destroy()
@@ -383,7 +383,7 @@ local function initializeAbility()
     local UltimateButtonCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
     Clone5.Visible = false
 
-    AwakeningStat:GetPropertyChangedSignal("Value"):Connect(function()
+    AwakeningStat.Changed:Connect(function()
         if AwakeningStat.Value ~= 0 then
             Clone5.Visible = true
             Clone1.Visible = false
