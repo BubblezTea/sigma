@@ -2,6 +2,7 @@ local player = game:GetService("Players").LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local st = player.PlayerGui:WaitForChild("Style").BG.StyleTxt
 local Slot = player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.Text
+local SlotState = player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.State
 local des = player.PlayerGui.Style.BG.Desc
 
 -- Function to create a red tail effect attached to the torso
@@ -35,10 +36,12 @@ createRedTail()
 
 -- Update the style name and description
 while wait() do
-    st.Text = "Blaze"
-    st.TextColor3 = Color3.fromRGB(250, 184, 31)
+    if SlotState.Text == "Equipped" then
+        st.Text = "Blaze"
+        st.TextColor3 = Color3.fromRGB(250, 184, 31)
+        des.Text = "Smashes through the battlefield with blazing speeds."
+    end
     Slot.Text = "Blaze"
     Slot.TextColor3 = Color3.fromRGB(255, 255, 255)
     player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.ImageColor3 = Color3.fromRGB(250, 125, 250)
-    des.Text = "Smashes through the battlefield with blazing speeds."
 end
