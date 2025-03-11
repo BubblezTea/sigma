@@ -384,7 +384,7 @@ local function initializeAbility()
     Clone5.Visible = false
 
     InAwakening.Changed:Connect(function()
-        if AwakeningStat.Value ~= 0 then
+        if InAwakening.Value == true then
             Clone5.Visible = true
             Clone1.Visible = false
         else
