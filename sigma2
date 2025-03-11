@@ -335,7 +335,7 @@ local function initializeAbility()
         end)
 
         while Untouchable == true do
-            player.Character.Humanoid.WalkSpeed = 88
+            player.Character.Humanoid.WalkSpeed = 66
             wait(0.01)
         end
     end
