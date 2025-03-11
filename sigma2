@@ -383,7 +383,7 @@ local function initializeAbility()
     local UltimateButtonCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
     Clone5.Visible = false
 
-    AwakeningStat.Changed:Connect(function()
+    AwakeningStat:GetPropertyChangedSignal("Value"):Connect(function()
         if AwakeningStat.Value ~= 0 then
             Clone5.Visible = true
             Clone1.Visible = false
