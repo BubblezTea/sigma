@@ -2,6 +2,10 @@ local player = game.Players.LocalPlayer
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local InAwakening = player.PlayerStats:WaitForChild("InAwakening")
+local st = player.PlayerGui:WaitForChild("Style").BG.StyleTxt
+local Slot = player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.Text
+local SlotState = player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.State
+local des = player.PlayerGui.Style.BG.Desc
 
 local Ab1 = false
 local Ab2 = false
@@ -36,6 +40,9 @@ local function initializeAbility()
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+    player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
+    player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = false
     
     local animation1 = Instance.new("Animation")
     animation1.AnimationId = "rbxassetid://99916870664377"  -- Replace with your desired animation ID
@@ -511,13 +518,17 @@ end
 -- Reinitialize the ability each time the character is added (e.g., when joining a match)
 player.CharacterAdded:Connect(function()
     cleanup()
-    initializeAbility()
+    if SlotState.Text == "Equipped" then
+        initializeAbility()
+    end
 end)
 
 -- Initial cleanup and ability initialization
 cleanup()
 if player.Character then
-    initializeAbility()
+    if SlotState.Text == "Equipped" then
+        initializeAbility()
+    end
 end
 
 function Cooldown(ability, cooldown)
