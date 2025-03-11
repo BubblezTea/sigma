@@ -7,11 +7,13 @@ local Ab1 = false
 local Ab2 = false
 local Ab3 = false
 local Ab4 = false
+local Ab5 = false
 
 local Ab1Cd = 90
 local Ab2Cd = 60
 local Ab3Cd = 60
 local Ab4Cd = 90
+local Ab5Cd = 120
 
 local strength = 175
 
@@ -377,13 +379,15 @@ local function initializeAbility()
     Clone5.Keybind.Text = "H"
     Clone5.Timer.Text = "Can't Touch Me"
     Clone5.ActualTimer.Text = ""
-    local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
+    local UltimateButtonCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
     Clone5.Visible = false
 
     AwakeningEvent.OnClientEvent:Connect(function()
     if player.PlayerStats.InAwakening then
         Clone5.Visible = true
+        Clone4.Visible = false
     else
+        Clone4.Visible = true
         Clone5.Visible = false
     end
 end)
@@ -432,6 +436,17 @@ end)
             end
     end)
 
+       Clone5.Activated:Connect(function()
+        -- Trigger the Satoru Shot ability when the button is clicked
+        if Ab5 == false then
+                triggerAbility5()
+                Cooldown(UltimateButtonCd, Ab5Cd)
+                Ab5 = true
+                wait(Ab5Cd)
+                Ab5 = false
+            end
+    end)
+
     -- Listen for the key presses (PC input)
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
@@ -476,6 +491,17 @@ end)
                 Ab4 = true
                 wait(Ab4Cd)
                 Ab4 = false
+            end
+        end
+        
+        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.H then
+            -- Trigger the Satoru Shot ability when the "T" key is pressed
+            if Ab5 == false then
+                triggerAbility5()
+                Cooldown(UltimateButtonCd, Ab5Cd)
+                Ab5 = true
+                wait(Ab5Cd)
+                Ab5 = false
             end
         end
     end)
