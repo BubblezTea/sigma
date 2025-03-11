@@ -456,9 +456,6 @@ local function initializeAbility()
             end
     end)
 
-    player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
-    player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = false
-
     -- Listen for the key presses (PC input)
     game:GetService("UserInputService").InputBegan:Connect(function(input, gameProcessed)
         if gameProcessed then return end  -- Ignore if the game has already processed this input (e.g., typing in chat)
@@ -516,6 +513,9 @@ local function initializeAbility()
                 Ab5 = false
             end
         end
+
+        player.PlayerGui.InGameUI.Bottom.Abilities["1"].Visible = false
+        player.PlayerGui.InGameUI.Bottom.Abilities["2"].Visible = false
     end)
 end
 
