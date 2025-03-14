@@ -24,9 +24,6 @@ local Paragraph2 = AddParagraph(Main, {"More Games Getting Supported Soon","INFO
 local Paragraph3 = AddParagraph(Main, {"Only Blue Lock Rivals Supported"});
 local Paragraph4 = AddParagraph(Main, {"PresidentZuyi Is The Owner Of This Script"});
 local Main = MakeTab({Name="Custom Styles"});
-AddButton(Main, {Name="¥ Get Gojo Satoru Style💙❤️",Description="Why’d u click it ts pmo☠️!",Callback=function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PresidentZuyi/H/refs/heads/main/B"))();
-end});
 AddButton(Main, {Name="🔥 Blaze 🔥",Callback=function()
 	local FlatIdent_76979 = 0;
 	local runScript;
@@ -52,8 +49,30 @@ AddButton(Main, {Name="🔥 Blaze 🔥",Callback=function()
 		end
 	end
 end});
-AddButton(Main, {Name="¥ Get Igaguri Gurimu Style🕉️",Callback=function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/PresidentZuyi/Hi/refs/heads/main/Chh"))();
+AddButton(Main, {Name="🔰 Lavinho the Dribbler",Callback=function()
+	local FlatIdent_76979 = 0;
+	local runScript;
+	local co1;
+	local co2;
+	while true do
+		if (FlatIdent_76979 == 2) then
+			coroutine.resume(co1, "https://raw.githubusercontent.com/BubblezTea/sigma/refs/heads/main/sigma4");
+			coroutine.resume(co2, "https://raw.githubusercontent.com/BubblezTea/sigma/refs/heads/main/sigma5");
+			break;
+		end
+		if (FlatIdent_76979 == 1) then
+			co1 = coroutine.create(runScript);
+			co2 = coroutine.create(runScript);
+			FlatIdent_76979 = 2;
+		end
+		if (FlatIdent_76979 == 0) then
+			runScript = nil;
+			function runScript(url)
+				loadstring(game:HttpGet(url))();
+			end
+			FlatIdent_76979 = 1;
+		end
+	end
 end});
 AddButton(Main, {Name="¥ Lavinho The Dribbler Coming Soon!✅",Callback=function()
 end});
