@@ -37,11 +37,11 @@ createRedTail()
 -- Update the style name and description
 while wait() do
     if SlotState.Text == "Equipped" then
-        st.Text = "Blaze"
+        st.Text = "Lavinho"
         st.TextColor3 = Color3.fromRGB(250, 184, 31)
-        des.Text = "Smashes through the battlefield with blazing speeds."
+        des.Text = "The Perfect Dribbler."
     end
-    Slot.Text = "Blaze"
+    Slot.Text = "Lavinho"
     Slot.TextColor3 = Color3.fromRGB(255, 255, 255)
     player.PlayerGui.Style.BG.Slots.ScrollingFrame.Slot1.ImageColor3 = Color3.fromRGB(250, 125, 250)
 end
