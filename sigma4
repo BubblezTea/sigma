@@ -9,21 +9,15 @@ local des = player.PlayerGui.Style.BG.Desc
 
 local Ab1 = false
 local Ab2 = false
-local Ab3 = false
-local Ab4 = false
-local Ab5 = false
 
-local Ab1Cd = 90
-local Ab2Cd = 60
-local Ab3Cd = 60
-local Ab4Cd = 90
-local Ab5Cd = 120
+local Ab1Cd = 120
+local Ab2Cd = 90
 
 local strength = 175
 
 local function cleanup()
     -- Remove any existing cloned ability buttons
-    for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton", "MetavisionButton", "SatoruShotButton", "UltimateButton"}) do
+    for _, buttonName in ipairs({"FakeHeelFlickButton", "JinpachiTurnButton"}) do
         local button = player.PlayerGui.InGameUI.Bottom.Abilities:FindFirstChild(buttonName)
         if button then
             button:Destroy()
@@ -154,23 +148,8 @@ local function initializeAbility()
 
     -- Function to trigger the Fake Heel Flick ability
     local function triggerAbility1()
-               -- Play the sound at the start of the move
-        sound1:Play()
-
-        -- Start the animation immediately
-        animationTrack1:Play()
-        animationTrack1:AdjustSpeed(7)
-
-        -- Fire the ball after the animation finishes
-        animationTrack3.Stopped:Connect(function()
-            local args = {
-                [1] = 50,  -- Adjust force as necessary
-            }
-            game:GetService("ReplicatedStorage").Packages.Knit.Services.BallService.RE.Shoot:FireServer(unpack(args))
-        end)
-
-        local zigzagDuration = 0.25  -- Duration for faster movement
-        local zigzagDistance = 0  -- Distance for more noticeable zigzag
+        local zigzagDuration = 0.5  -- Duration for faster movement
+        local zigzagDistance = 50  -- Distance for more noticeable zigzag
         local forwardForce = 48  -- Forward force
 
         -- Create tweens for zigzag movement
@@ -191,7 +170,7 @@ local function initializeAbility()
 
         -- Start zigzag movement
         local zigzagTweens = {}
-        for i = 1, 1 do  -- Adjust the number of zigzags as needed
+        for i = 1, 2 do  -- Adjust the number of zigzags as needed
             game.Players.LocalPlayer.PlayerStats.Stamina.Value -= 5
             sound1:Play()
             local direction = (i % 2 == 1) and 1 or -1
@@ -218,51 +197,6 @@ local function initializeAbility()
 
     -- Function to trigger the Roulette ability
     local function triggerAbility2()
-        -- Apply a forward force to the player
-        local bodyVelocity = Instance.new("BodyVelocity")
-        bodyVelocity.Velocity = humanoidRootPart.CFrame.LookVector * 62
-        bodyVelocity.MaxForce = Vector3.new(1000000, 0, 1000000)
-        bodyVelocity.Parent = humanoidRootPart
-        local power =  1
-        print(power * 10)
-        game.Players.LocalPlayer.PlayerStats.Stamina.Value -= power * 10
-        
-
-        -- Remove the force after a short duration
-        game.Debris:AddItem(bodyVelocity, power)
-        print(power)
-
-        -- Play the sound at the start of the move
-        sound2:Play()
-
-        -- Start the animation immediately (dribble animation)
-        animationTrack2:Play()
-        animationTrack2:AdjustSpeed(0.9)
-
-        -- Create the visual red effect
-        createRedEffect()
-    end
-
-    -- Function to trigger the Metavision ability
-    local function triggerAbility3()
-        sound4:Play()
-        local Metavision = true
-        displayAbilityText("We will NOT GO DOWN WITHOUT A FIGHT!", 5)
-        setScreenColor(Color3.new(0.98, 0.72, 0.12))
-        delay(5, function()
-            displayAbilityText("WILLPOWER ACTIVATED", 5)
-        end)
-        delay(10, function()
-            metavision = false
-            setScreenColor(Color3.new(0.5, 0.5, 0.5))  -- Adjust to default lighting settings
-        end)
-    end
-        while Metavision == true do
-            player.Character.Humanoid.WalkSpeed = 50
-            wait(0.001)
-        end
-
-    local function triggerAbility4()
         -- Play the sound at the start of the move
         sound3:Play()
 
@@ -279,80 +213,13 @@ local function initializeAbility()
         end)
     end
 
-    local function triggerAbility5()
-        sound3:Play()
-        local Untouchable = true
-        -- Play the sound at the start of the move
-
-        -- Start the animation immediately (dribble animation)
-        animationTrack1:Play()
-        animationTrack1:AdjustSpeed(1.5)  -- Increase animation speed
-        
-        -- Zigzag movement variables
-        local zigzagDuration = 0.25  -- Duration for faster movement
-        local zigzagDistance = 20  -- Distance for more noticeable zigzag
-        local forwardForce = 48  -- Forward force
-
-        -- Create tweens for zigzag movement
-        local function createZigzagTween(direction, index)
-            local forwardVector = humanoidRootPart.CFrame.LookVector
-            local rightVector = humanoidRootPart.CFrame.RightVector
-            local targetPosition = humanoidRootPart.Position + (forwardVector * (zigzagDistance * index) + direction * rightVector * zigzagDistance)
-            local targetCFrame = CFrame.new(targetPosition, targetPosition + forwardVector)  -- Ensure the player faces forward
-            local tweenInfo = TweenInfo.new(zigzagDuration, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut)
-            local tween = TweenService:Create(humanoidRootPart, tweenInfo, {CFrame = targetCFrame})
-            return tween
-        end
-
-        -- Enable visual effects
-        visualEffect.Enabled = true
-        coolEffect.Enabled = true
-        foggyAura.Enabled = true
-
-        -- Start zigzag movement
-        local zigzagTweens = {}
-        for i = 1, 8 do  -- Adjust the number of zigzags as needed
-            game.Players.LocalPlayer.PlayerStats.Stamina.Value -= 5
-            sound1:Play()
-            local direction = (i % 2 == 1) and 1 or -1
-            local tween = createZigzagTween(direction, i)
-            table.insert(zigzagTweens, tween)
-        end
-
-        -- Play the zigzag tweens sequentially
-        local function playZigzagTweens(index)
-            if index > #zigzagTweens then
-                -- Zigzag movement finished
-                visualEffect.Enabled = false
-                coolEffect.Enabled = false
-                foggyAura.Enabled = false
-                return
-            end
-            local currentTween = zigzagTweens[index]
-            currentTween:Play()
-            currentTween.Completed:Connect(function()
-                playZigzagTweens(index + 1)
-            end)
-        end
-
-        playZigzagTweens(1)
-        delay(20, function()
-                Untouchable = false
-        end)
-
-        while Untouchable == true do
-            player.Character.Humanoid.WalkSpeed = 66
-            wait(0.001)
-        end
-    end
-
     -- Clone the ability buttons (for mobile or GUI use)
     local Clone1 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
     Clone1.Name = "FakeHeelFlickButton"
     Clone1.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone1.LayoutOrder = -3
     Clone1.Keybind.Text = "Y"
-    Clone1.Timer.Text = "Rising Dance"
+    Clone1.Timer.Text = "Machinist"
     Clone1.ActualTimer.Text = ""
     Clone1.Visible = true
     local FakeHeelFlickCd = player.PlayerGui.InGameUI.Bottom.Abilities["FakeHeelFlickButton"].Cooldown.UIGradient
@@ -362,50 +229,10 @@ local function initializeAbility()
     Clone2.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
     Clone2.LayoutOrder = -2
     Clone2.Keybind.Text = "Z"
-    Clone2.Timer.Text = "Perfect Dribble"
+    Clone2.Timer.Text = "Omni-Shot"
     Clone2.ActualTimer.Text = ""
     Clone2.Visible = true
     local JinpachiTurnCd = player.PlayerGui.InGameUI.Bottom.Abilities["JinpachiTurnButton"].Cooldown.UIGradient
-    
-    local Clone3 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
-    Clone3.Name = "MetavisionButton"
-    Clone3.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
-    Clone3.LayoutOrder = -5
-    Clone3.Keybind.Text = "LeftAlt"
-    Clone3.Timer.Text = "Ginga Style"
-    Clone3.ActualTimer.Text = ""
-    Clone3.Visible = true
-    local MetavisionCd = player.PlayerGui.InGameUI.Bottom.Abilities["MetavisionButton"].Cooldown.UIGradient
-
-    local Clone4 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
-    Clone4.Name = "SatoruShotButton"
-    Clone4.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
-    Clone4.LayoutOrder = -1
-    Clone4.Keybind.Text = "B"
-    Clone4.Timer.Text = "Imperfect Dribblew"
-    Clone4.ActualTimer.Text = ""
-    Clone4.Visible = true
-    local SatoruShotCd = player.PlayerGui.InGameUI.Bottom.Abilities["SatoruShotButton"].Cooldown.UIGradient
-
-    local Clone5 = player.PlayerGui.InGameUI.Bottom.Abilities["1"]:Clone()
-    Clone5.Name = "UltimateButton"
-    Clone5.Parent = player.PlayerGui.InGameUI.Bottom.Abilities
-    Clone5.LayoutOrder = -4
-    Clone5.Keybind.Text = "H"
-    Clone5.Timer.Text = "Trickery"
-    Clone5.ActualTimer.Text = ""
-    local UltimateButtonCd = player.PlayerGui.InGameUI.Bottom.Abilities["UltimateButton"].Cooldown.UIGradient
-    Clone5.Visible = false
-
-    InAwakening.Changed:Connect(function()
-        if InAwakening.Value == true then
-            Clone5.Visible = true
-            Clone1.Visible = false
-        else
-            Clone5.Visible = false
-            Clone1.Visible = true
-        end
-    end)
     
     -- Listen for the button activations (when clicked)
     Clone1.Activated:Connect(function()
@@ -427,38 +254,6 @@ local function initializeAbility()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
-            end
-    end)
-
-    Clone3.Activated:Connect(function()
-        if Ab3 == false then
-                triggerAbility3()
-                Cooldown(MetavisionCd, Ab3Cd)
-                Ab3 = true
-                wait(Ab3Cd)
-                Ab3 = false
-            end
-    end)
-
-    Clone4.Activated:Connect(function()
-        -- Trigger the Satoru Shot ability when the button is clicked
-        if Ab4 == false then
-                triggerAbility4()
-                Cooldown(SatoruShot, Ab4Cd)
-                Ab4 = true
-                wait(Ab4Cd)
-                Ab4 = false
-            end
-    end)
-
-       Clone5.Activated:Connect(function()
-        -- Trigger the Satoru Shot ability when the button is clicked
-        if Ab5 == false then
-                triggerAbility5()
-                Cooldown(UltimateButtonCd, Ab5Cd)
-                Ab5 = true
-                wait(Ab5Cd)
-                Ab5 = false
             end
     end)
 
@@ -484,39 +279,6 @@ local function initializeAbility()
                 Ab2 = true
                 wait(Ab2Cd)
                 Ab2 = false
-            end
-        end
-
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.LeftAlt then
-            -- Trigger the Metavision ability when the "V" key is pressed
-            if Ab3 == false then
-                triggerAbility3()
-                Cooldown(MetavisionCd, Ab3Cd)
-                Ab3 = true
-                wait(Ab3Cd)
-                Ab3 = false
-            end
-        end
-
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.B then
-            -- Trigger the Satoru Shot ability when the "T" key is pressed
-            if Ab4 == false then
-                triggerAbility4()
-                Cooldown(SatoruShotCd, Ab4Cd)
-                Ab4 = true
-                wait(Ab4Cd)
-                Ab4 = false
-            end
-        end
-        
-        if input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == Enum.KeyCode.H then
-            -- Trigger the Satoru Shot ability when the "T" key is pressed
-            if Ab5 == false then
-                triggerAbility5()
-                Cooldown(UltimateButtonCd, Ab5Cd)
-                Ab5 = true
-                wait(Ab5Cd)
-                Ab5 = false
             end
         end
 
