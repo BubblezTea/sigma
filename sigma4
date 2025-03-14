@@ -148,8 +148,15 @@ local function initializeAbility()
 
     -- Function to trigger the Fake Heel Flick ability
     local function triggerAbility1()
+        -- Play the sound at the start of the move
+
+        -- Start the animation immediately (dribble animation)
+        animationTrack1:Play()
+        animationTrack1:AdjustSpeed(1.5)  -- Increase animation speed
+        
+        -- Zigzag movement variables
         local zigzagDuration = 0.5  -- Duration for faster movement
-        local zigzagDistance = 50  -- Distance for more noticeable zigzag
+        local zigzagDistance = 25  -- Distance for more noticeable zigzag
         local forwardForce = 48  -- Forward force
 
         -- Create tweens for zigzag movement
@@ -192,7 +199,6 @@ local function initializeAbility()
             currentTween.Completed:Connect(function()
                 playZigzagTweens(index + 1)
             end)
-        end
     end
 
     -- Function to trigger the Roulette ability
