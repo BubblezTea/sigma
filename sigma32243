@@ -1,0 +1,2679 @@
+local module_upvr = {
+	raceWeighting = {};
+	noRareRaceWeighting = {};
+}
+for _, v in pairs(game.ReplicatedStorage.Rollables.Races:GetChildren()) do
+	module_upvr.raceWeighting[v.Name] = v.Value
+end
+for _, v_2 in pairs(game.ReplicatedStorage.Rollables.Races:GetChildren()) do
+	if 10 < v_2.Value then
+		module_upvr.noRareRaceWeighting[v_2.Name] = v_2.Value
+	end
+end
+module_upvr.TotalWeight = 0
+module_upvr.TotalNoRareWeight = 0
+for _, v_3 in pairs(module_upvr.raceWeighting) do
+	module_upvr.TotalWeight += v_3
+end
+for _, v_4 in pairs(module_upvr.noRareRaceWeighting) do
+	module_upvr.TotalNoRareWeight += v_4
+end
+module_upvr.MagicalAffinities = {
+	Magic = true;
+	Nature = true;
+	Dark = true;
+	Holy = true;
+	Fire = true;
+	Ice = true;
+}
+module_upvr.SummonedSkills = {
+	Stand = {
+		["Ora!"] = {
+			Cost = 0;
+			Affinity = "Physical";
+			Type = "Melee";
+			Cooldown = 0;
+			Damage = 25;
+		};
+	};
+	["Lesser Sylph"] = {
+		["Wind Bolt"] = {
+			Cost = 0;
+			Affinity = "Nature";
+			Type = "Ranged";
+			Cooldown = 0;
+			Damage = 5;
+			Scaling = "Dual";
+		};
+		["Gale Pulse"] = {
+			Cost = 2;
+			Affinity = "Nature";
+			Type = "Ranged";
+			Cooldown = 6;
+			Damage = 7;
+			Scaling = "Dual";
+		};
+	};
+	Skeleton = {
+		Smack = {
+			Cost = 0;
+			Affinity = "Physical";
+			Type = "Melee";
+			Cooldown = 0;
+			Damage = 5;
+		};
+		["Bone Spray"] = {
+			Cost = 2;
+			Affinity = "Physical";
+			Type = "Ranged";
+			Cooldown = 4;
+			Damage = 11;
+		};
+	};
+}
+module_upvr.Skills = {
+	Strike = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 5;
+		Description = "Your trusty attack, just smack em.";
+	};
+	Mark = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 2;
+		Damage = 7;
+		Description = "Strike a monster with a piece of your soul, if it kills then gain the knowledge of that monster for your bestiary.";
+	};
+	["Magic Missile"] = {
+		Cost = 0;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 6;
+		Requirement = {"Staff"};
+		Description = "Fire off a bolt of magical energy.";
+		Chip = 0.4;
+	};
+	["Double Slash"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 5;
+		Requirement = {"Sword", "Greatsword"};
+		Description = "Strike twice in quick succession.";
+	};
+	["Pommel Strike"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 3;
+		Damage = 7;
+		Requirement = {"Sword", "Greatsword"};
+		Description = "Bash your enemy with the base of your sword, has a chance to stun.";
+	};
+	Stab = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 2;
+		Damage = 6;
+		Requirement = {"Dagger"};
+		Description = "Stab deep into the enemy, inflicting bleed.";
+	};
+	["Pocket Sand"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 3;
+		Damage = 8;
+		Requirement = {"Dagger"};
+		Description = "Grab and throw sand into the enemy's eyes, inflicting blind.";
+	};
+	["Triple Stab"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 3.33;
+		Requirement = {"Spear"};
+		Description = "Barrage your enemy with quick pokes.";
+	};
+	["Serpent Strike"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 6;
+		Requirement = {"Spear"};
+		Description = "Jab a target with a poison tipped strike.";
+	};
+	Endure = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 3;
+		SelfTarget = true;
+		Requirement = {"Cestus"};
+		Description = "Brace for the next while, increasing your defense.";
+		Duration = 2;
+	};
+	Barrage = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 3.3;
+		Requirement = {"Cestus"};
+		Description = "Barrage your enemy with heavy strikes.";
+	};
+	["Summon Stand"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 3;
+		SelfTarget = true;
+	};
+	["Tense Up"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Tense your muscles, increasing defense for a short time.";
+		Duration = 4;
+		NPCUsable = true;
+	};
+	["Focus Step"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Focus your energy into your legs, increasing your speed stat and giving you a chance to dodge attacks for a short time. When it ends, take recoil damage.";
+		Duration = 4;
+		NPCUsable = true;
+	};
+	["Circuit Charge"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 5;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Stress your magic circuits to their limit, granting you energy at the cost of health.";
+		NPCUsable = true;
+	};
+	Ghostflame = {
+		Cost = 1;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 6;
+		Damage = 5;
+		Description = "Fire off a piece of your flame, igniting ghostflame on your enemy.";
+		Scaling = "Dual";
+		NPCUsable = true;
+	};
+	["Holy Crash"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 11;
+		Requirement = {"Sword"};
+		Adjacent = true;
+		AdjacentMultiplier = 5;
+		Description = "Condense holy energy into your blade, striking it down upon your foes with a large explosion. Causes enemies to aggro onto you for a short time.";
+	};
+	["Pure Resonation"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 9;
+		Damage = 0;
+		SelfTarget = true;
+		Requirement = {"Sword"};
+		Description = "Call upon your faith and empower you and your allies.";
+		Duration = 5;
+	};
+	Restructure = {
+		Cost = 2;
+		Affinity = "Nature";
+		Type = "Heal";
+		Cooldown = 9;
+		Damage = 0;
+		Support = true;
+		Description = "Activate rapid cell depair on a target, healing them over time.";
+		Duration = 3;
+		NPCUsable = true;
+	};
+	["Mulligan Realm"] = {
+		Cost = 3;
+		Affinity = "Nature";
+		Type = "Buff";
+		Cooldown = 10;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "A party buff, creates a glowing green ring around the battle, gives all allies a chance to survive a fatal blow, and boosts all ally healing for 3 turns.";
+	};
+	["Sacred Call"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		Requirement = {"Sword"};
+		Support = true;
+		Description = "Call upon grace, buffing an ally with rotating swords of light. Grants a mulligan to the target for the duration.";
+		Duration = 3;
+	};
+	["Lightning Crash"] = {
+		Cost = 3;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 7;
+		Damage = 14;
+		Requirement = {"Staff"};
+		Description = "Call down bolts of lightning on all your enemies, has a chance to stun.";
+	};
+	Blaze = {
+		Cost = 1;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 7;
+		Requirement = {"Staff"};
+		Description = "Fire off a burst of fire towards an enemy, if they are burning the fire explodes.";
+		Adjacent = true;
+		AdjacentMultiplier = 4;
+	};
+	["Wind Reflect"] = {
+		Cost = 2;
+		Affinity = "Nature";
+		Type = "Buff";
+		Cooldown = 12;
+		Damage = 0;
+		Support = true;
+		Requirement = {"Staff", "Spear"};
+		Description = "Place down a barrier of wind, deflecting melee attacks.";
+		Duration = 2;
+	};
+	["Poison Trap"] = {
+		Cost = 1;
+		Affinity = "Poison";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 5;
+		Support = true;
+		Requirement = {"Dagger"};
+		Description = "Throw down a small trap that releases toxins on melee attackers.";
+		Duration = 2;
+		Scaling = "MiscDual";
+	};
+	["Slash Barrage"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 7;
+		Requirement = {"Dagger"};
+		Description = "Rush down an enemy with a flurry of quick slashes, deals extra damage against bleeding targets.";
+		CritBonus = 10;
+	};
+	["Dagger Spread"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 9;
+		Requirement = {"Dagger"};
+		Description = "Leap up and throw daggers at all enemies.";
+		Scaling = "Dual";
+	};
+	["Cleansing Prayer"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 5;
+		Damage = 0;
+		Support = true;
+		Requirement = {"Spear"};
+		Description = "Call upon cleansing light on a target, clearing status ailments and soothing them.";
+	};
+	["Holy Grace"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Heal";
+		Cooldown = 5;
+		Damage = 0;
+		Support = true;
+		Requirement = {"Spear"};
+		Description = "Condense your grace into a burst of healing on a target.";
+	};
+	["Light Burst"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Debuff";
+		Cooldown = 5;
+		Damage = 9;
+		Requirement = {"Spear"};
+		Description = "Charge light into your spear and release it as a burst of light, burning and blinding all enemies.";
+	};
+	["Fire Sutra"] = {
+		Cost = 1;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		Support = true;
+		Requirement = {"Cestus"};
+		Description = "Release a wave of fire outwards, empowering your fists with fire.";
+		Duration = 3;
+	};
+	["Blazing Barrage"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 2.1;
+	};
+	Requirement = {
+		Description = "Unleash a flurry of strikes at an enemy so fast your fists catch fire.";
+		"Cestus"
+	};
+	["Holy Mantra"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		Support = true;
+		Description = "Empower you or an ally with resilient light, reinforcing them.";
+		Duration = 4;
+	};
+	["Flame Drop"] = {
+		Cost = 3;
+		Affinity = "Fire";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 15;
+		Requirement = {"Cestus"};
+		Adjacent = true;
+		AdjacentMultiplier = 2;
+		Description = "Condense fire into your leg, leaping and crashing down onto an enemy with a large explosion.";
+	};
+	["Burst Trap"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 10;
+		SelfTarget = true;
+		Description = "Throw down a rigged trap, exploding on the first melee attacker.";
+		Scaling = "MiscDual";
+		NPCUsable = true;
+	};
+	["Cast Amplify"] = {
+		Cost = 1;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 9;
+		Damage = 0;
+		Support = true;
+		Description = "Amplify a target, causing their MAGIC, HOLY, FIRE, NATURE, ICE or DARK attacks to be empowered with more damage and a shorter cooldown.";
+		Duration = 4;
+		NPCUsable = true;
+	};
+	Fireball = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 10;
+		Requirement = {"Staff"};
+		Description = "Fire off a ball of violent fire towards a target, has a chance to inflict burning.";
+	};
+	["Dark Slash"] = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 11;
+		Requirement = {"Sword", "Dagger", "Greatsword"};
+		Description = "Condense darkness into your blade, unleashing a heavy slash.";
+	};
+	["Self Cure"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Rashly call upon the light to cleanse you of status ailments, causing you to take recoil.";
+	};
+	["Skyward Bolt"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Ranged";
+		Cooldown = 6;
+		Damage = 10;
+		Description = "Condense your light into a bolt of shocking energy, has a chance to blind.";
+	};
+	Summon = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 1;
+		Damage = 10;
+		SelfTarget = true;
+	};
+	["Call Sylph"] = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Call upon a Lesser Sylph to assist you in battle.";
+		NPCUsable = true;
+	};
+	Daze = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 9;
+		Description = "Strike an enemy in the head, inflicting weakened.";
+	};
+	["Illusion Cage"] = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Debuff";
+		Cooldown = 8;
+		Damage = 0;
+		Support = true;
+		Description = "Create an illusion over yourself, causing the first enemy to attack you to be trapped in a cage of illusions.";
+		NPCUsable = true;
+	};
+	["Darklight Drain"] = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 6;
+		PLifeSteal = 0.7;
+		Requirement = {"Staff"};
+		Description = "Grab an enemy by their soul and crush the life out of them, healing you and your team's summons in the process.";
+	};
+	["Raise Dead"] = {
+		Cost = 3;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 25;
+		Damage = 0;
+		Support = true;
+		Requirement = {"Staff"};
+		Description = "Raise a dead ally from the ground, restoring a portion of their life and allowing them to fight again.";
+		IgnoreTrap = true;
+	};
+	Carnage = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Melee";
+		Cooldown = 7;
+		Damage = 1.5;
+		Requirement = {"Greatsword"};
+		Description = "Consume all your energy and strike the ground with your greatsword, causing slices that scale off X consumed energy to form all around you. Inflicts sundered at 6 energy consumed.";
+		AllEnergy = true;
+	};
+	["Rage Empower"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+		Requirement = {"Greatsword"};
+		Description = "Sacrifice a portion of your sanity to enter a state of pure rage, increasing offensive power while decreasing defensive power.";
+		Duration = 5;
+	};
+	["Head Splitter"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 16;
+		Requirement = {"Greatsword"};
+		Description = "Leap into the air and crash your greatsword down with destructive power, deals extreme damage to an enemy and applies 2 vulnerable.";
+		Pierce = true;
+	};
+	["Bloody Burst"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 2.5;
+		Requirement = {"Spear"};
+		Description = "Pierce yourself and release a slew of blood shards that you fire at all enemies, deals self damage.";
+		Scaling = "Dual";
+	};
+	["Blood Eruption"] = {
+		Cost = 3;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 9;
+		Damage = 16;
+		Requirement = {"Spear"};
+		Description = "Encapsulate yourself in blood, and after a short delay explode outwards and damage all enemies, deals self damage.";
+		Scaling = "Dual";
+	};
+	["Rending Barrage"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 3.5;
+		Requirement = {"Spear"};
+		Description = "Envelope your spears in your blood, and rush down an enemy with a barrage of strikes, ends with a bonus attack if they are bleeding.";
+	};
+	["Call Skeleton"] = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Buff";
+		Cooldown = 8;
+		Damage = 0;
+		Requirement = {"Staff"};
+		Description = "Call upon a dead mortal from the ground, raising a skeleton to do your bidding.";
+	};
+	["Bone Spray"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 12;
+		Description = "Create a barrage of bones and fire them at all enemies.";
+	};
+	["Shadow Form"] = {
+		Cost = 1;
+		Affinity = "Dark";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		Requirement = {"Dagger"};
+		Duration = 2;
+		SelfTarget = true;
+		Description = "Strike yourself and apply Invisible to yourself, making you untargetable and making your next attack true.";
+	};
+	["Stealth Strike"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 10;
+		Requirement = {"Dagger"};
+		Description = "Vanish into the shadows and appear behind a target, striking them from behind. Deals extra damage while Invisible. If the target is poisoned also inflict 2 Cursed.";
+		CritBonus = 10;
+	};
+	["Poison Fan"] = {
+		Cost = 3;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 7;
+		Damage = 3.5;
+		Requirement = {"Dagger"};
+		Adjacent = true;
+		AdjacentMultiplier = 1;
+		Description = "Throw out a fan of poisonous daggers that poisons your target and those around it.";
+		Scaling = "Dual";
+	};
+	["Sinister Gaze"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 12;
+		Damage = 2.2;
+		Description = "Stare at your enemy with your cursed eye to deal damage and copy their stat buffs while sharing your negative status effects.";
+		Scaling = "Dual";
+	};
+	["Undulating Hex"] = {
+		Cost = 4;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 9;
+		Damage = 15;
+		Description = "Unleash a large burst of hex from your cursed side that forms into a large blade of hex that drops onto a foe.";
+		Adjacent = true;
+		Scaling = "Dual";
+	};
+	["Gilded Strike"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Melee";
+		Cooldown = 9;
+		Damage = 12;
+		Description = "Imbue the essence of gold into a strike, if it kills then gain bonus gold based on the enemy's max health.";
+	};
+	["Lesser Heal"] = {
+		Cost = 2;
+		Affinity = "Nature";
+		Type = "Heal";
+		Cooldown = 6;
+		Damage = 0;
+		Support = true;
+		Description = "Cast a weak healing spell on a target, restoring some health.";
+	};
+	["Call Darkbeast"] = {
+		Cost = 1;
+		Affinity = "Dark";
+		Type = "Buff";
+		Cooldown = 5;
+		Damage = 0;
+		Requirement = {"Cestus"};
+		Description = "Unleash the darkness in your arm, creating a malignant beast of darkness to do your bidding. Becomes empowered at 4+ darkcores.";
+		SelfTarget = true;
+	};
+	["Darkcore Eruption"] = {
+		Cost = 1;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 0;
+		Requirement = {"Cestus"};
+		Description = "Consume all your darkcore stacks to create a dense release of darkness, at 5+ stacks it becomes empowered.";
+	};
+	["Dark Smite"] = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 2;
+		CritBonus = 30;
+		Requirement = {"Cestus"};
+		Description = "Strike the ground with darkness, creating a rift above a target that bathes them in black light, has bonus crit chance.";
+	};
+	Pounce = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 6;
+		Description = "Pounce and strike an enemy.";
+	};
+	["Void Bite"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Melee";
+		Cooldown = 3;
+		Damage = 11;
+		PLifeSteal = 0.3;
+		Description = "Bite a target with dark energy, siphoning off life from them.";
+	};
+	["Shade Roar"] = {
+		Cost = 3;
+		Affinity = "Dark";
+		Type = "Debuff";
+		Cooldown = 8;
+		Damage = 9;
+		Description = "Roar with dark energy, weakening and damaging all enemies from the pressure.";
+	};
+	Immolation = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 999;
+		Damage = 0;
+		Description = "Ignite yourself, causing you to take increasing damage as the fight goes on, but gain buffs as a result.";
+		Duration = 999;
+	};
+	["Bulk Up"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		Description = "Strengthen your muscles harshly, causing you to permanently deal more damage, but also permanently take more damage for the duration of the battle.";
+		SelfTarget = true;
+	};
+	["Steel Body"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 8;
+		Damage = 0;
+		Description = "Harden your body to the limit, causing you to take far less damage for a turn.";
+		Duration = 1;
+	};
+	["Latir Minor"] = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 10;
+		Damage = 0;
+		Description = "Strum a violin generated from your magic, creating a resonance that empowers your allies.";
+		Duration = 3;
+		SelfTarget = true;
+	};
+	["Rebanar Major"] = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 10;
+		Damage = 0;
+		Description = "Produce a trumpet from your magic and release a powerful reverberation that slices your enemies.";
+		SelfTarget = true;
+		CritBonus = -20;
+	};
+	["Absolute Radiance"] = {
+		Cost = 4;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 18;
+		Damage = 0;
+		Description = "Manifest a blazing sun that empowers your allies, it grows each turn you stay healthy, increasing in size and buff level each turn until it explodes.";
+		Duration = 6;
+		SelfTarget = true;
+	};
+	["Permafrost Curse"] = {
+		Cost = 4;
+		Affinity = "Ice";
+		Type = "Ranged";
+		Cooldown = 10;
+		Damage = 14;
+		Requirement = {"Staff"};
+		Description = "Create a massive field of ice around the battlefield, freezing all enemies.";
+	};
+	["Opulence Cutter"] = {
+		Cost = 0;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 10;
+		Damage = 10;
+		Description = "Forge an attack with the blessing of Lodyssa using the fortune she granted. Consumes Gold to deal damage and then boost the user.";
+	};
+	["Blood Shards"] = {
+		Cost = 3;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 9;
+		Damage = 1.2;
+		PLifeSteal = 0.2;
+		Description = "Slash the air, creating a rift of blood that fires a barrage of shards at your enemy, healing you for a percentage of damage dealt. If the target is vulnerable, apply 3 bleeding.";
+		Scaling = "Dual";
+	};
+	["Spirit Awakening"] = {
+		Cost = 4;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 18;
+		Damage = 0;
+		Description = "Merge with a spirit of your own to empower yourself, granting you a temporary modifier, and empowering your spirits. At the risk of hurting yourself after the duration.";
+		SelfTarget = true;
+		Duration = 4;
+	};
+	["Lifeless Skull"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 13;
+		Description = "Fire out a blazing skull dealing high damage, has a chance of igniting ghostflame.";
+		Scaling = "Dual";
+	};
+	["Arcane Ritual"] = {
+		Cost = 3;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 14;
+		Damage = 0;
+		Description = "Manifest a runic array over the battlefield, causing you and your allies' magical affinity attacks to have a chance of being empowered, also boosts the recovery of allies.";
+		Duration = 5;
+	};
+	Bane = {
+		Cost = 1;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 7;
+		Damage = 7;
+		Description = "Snap your fingers, creating a poison explosion, applying poison to your target and foes adjacent.";
+		Scaling = "Dual";
+		Adjacent = true;
+		AdjacentMultiplier = 2;
+	};
+	["Debuff Burst"] = {
+		Cost = 0;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 14;
+		Damage = 0;
+		Description = "you shouldn't see this >:(.";
+		Duration = 5;
+	};
+	["Heal Burst"] = {
+		Cost = 0;
+		Affinity = "Nature";
+		Type = "Buff";
+		Cooldown = 14;
+		Damage = 0;
+		Description = "you shouldn't see this >:(.";
+		Duration = 5;
+		CritBonus = -100;
+		NoBuffs = true;
+	};
+	["Amulet Burst"] = {
+		Cost = 0;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 14;
+		Damage = 0;
+		Description = "you shouldn't see this >:(.";
+		Duration = 5;
+		IgnoreTrap = true;
+	};
+	Chronos = {
+		Cost = 0;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 25;
+		Damage = 0;
+		Description = "Saves your point in time for 3 turns, after which time reverts and your Health and Energy rewind.";
+		SelfTarget = true;
+	};
+	["Dangerous Mixture"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 6;
+		Damage = 5;
+		Description = "Toss a mixture of various monster materials at an enemy, applying 2 random debuffs to them.";
+		Scaling = "Dual";
+	};
+	["Dark Glare"] = {
+		Cost = 1;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 7;
+		Requirement = {"Staff"};
+		Description = "Glare into your foe's soul with pure darkness, inflicting them with a variety of debuffs.";
+	};
+	["Abyss Anchor"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Debuff";
+		Cooldown = 11;
+		Damage = 0;
+		Requirement = {"Staff"};
+		Description = "Anchor down a foe with black chains, disabling their passive energy gain for a couple turns and subtracting energy from the afflicted.";
+	};
+	["Inverse Abyss"] = {
+		Cost = 3;
+		Affinity = "Hex";
+		Type = "Debuff";
+		Cooldown = 6;
+		Damage = 0;
+		Requirement = {"Staff"};
+		Description = "Cast a delayed trap on the battlefield, if you or your allies are inflicted by an enemy's debuff then reflect it to the entire enemy team.";
+		Duration = 3;
+	};
+	["Rallying Shout"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		Requirement = {"Spear"};
+		Description = "Take a stance and shout, empowering you and your allies and attracting the attention of foes.";
+		Duration = 4;
+	};
+	Discharge = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 10;
+		Requirement = {"Spear"};
+		Description = "Create a ball of lightning and fire it at a foe, shocking it and nearby targets.";
+		Scaling = "StrSpeed";
+		Adjacent = true;
+		AdjacentMultiplier = 3;
+	};
+	["Empowered Pierce"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 14;
+		Requirement = {"Spear"};
+		Description = "Charge your spear with lightning and impale a foe with shocking speed.";
+		Scaling = "StrSpeed";
+	};
+	["Party Table"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 1.5;
+		Requirement = {"Cestus"};
+		Description = "Fall into a handstand and spin with tremendous power, barraging your foe with kicks.";
+	};
+	["Crushing Strike"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 9;
+		Requirement = {"Cestus"};
+		Description = "Charge up a devastating punch and shatter your target with it, inflicting vulnerable.";
+	};
+	["Burst Combo"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 2.5;
+		Requirement = {"Cestus"};
+		Description = "Barrage your enemy with a flurry of punches and kicks ending with an uppercut, if the enemy is vulnerable then this attack is empowered.";
+	};
+	["Flowing Dance"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 1.35;
+		Requirement = {"Sword"};
+		Description = "Leap at your foe, spinning with your blades to create a devastating vortex, end it with a heavy strike.";
+		Scaling = "StrSpeed";
+	};
+	["Impaling Strike"] = {
+		Cost = 1;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 14;
+		Requirement = {"Sword"};
+		Description = "Strike both of your blades into your foe, inflicting bleed.";
+		CritBonus = 20;
+	};
+	["Simple Domain"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		Requirement = {"Sword"};
+		SelfTarget = true;
+		Description = "Take a stance for a turn, if attacked during this then retaliate with incredible power.";
+		Duration = 1;
+	};
+	["Ice Shards"] = {
+		Cost = 3;
+		Affinity = "Ice";
+		Type = "Ranged";
+		Cooldown = 8;
+		Damage = 2.5;
+		Requirement = {"Dagger", "Staff", "Spear"};
+		Description = "Fire off a blast of ice fragments towards a target, weakening them with the cold. Hits four times.";
+	};
+	["Simple Curse"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Debuff";
+		Cooldown = 6;
+		Damage = 5;
+		Requirement = {"Spear", "Staff", "Cestus"};
+		Description = "Cast a simple hex on a target leaving them weakened and vulnerable.";
+	};
+	["Lesser Empower"] = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		Requirement = {"Spear", "Sword", "Greatsword"};
+		Support = true;
+		Description = "Imbue a target ally or self with energy granting a 15% damage buff.";
+	};
+	["Surprise Package"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 11;
+		Damage = 15;
+		Requirement = {"Dagger", "Cestus"};
+		Description = "Plant a bomb on a target for 3 turns, if they take more than 30% dmg (5% for bosses) in those 3 turns then it explodes leaving them stunned. (Can't Stack)";
+		Scaling = "MiscDual";
+	};
+	Blizzard = {
+		Cost = 4;
+		Affinity = "Ice";
+		Type = "Buff";
+		Cooldown = 15;
+		Damage = 0;
+		Requirement = {"Staff"};
+		SelfTarget = true;
+		Description = "Create a mighty snowstorm, causing the battle area to be under heavy snow for four turns, decreasing all player and enemy defenses by 20%, increasing fire defense by 25% and increasing ice damage by 30%.";
+	};
+	["Metrom's Grasp"] = {
+		Cost = 5;
+		Affinity = "Magic";
+		Type = "Debuff";
+		Cooldown = 18;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Create a field of malfeasant energy around you, causing enemies to take more damage, have a smaller chance to block/dodge and take increased DoT damage for 5 turns.";
+	};
+	Permuth = {
+		Cost = 2;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 10;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Exchange 5% of your health into a random 40% stat buff for 3 turns, has weighting towards invested stats. Fails if you don't have enough health.";
+	};
+	["Torching Soul"] = {
+		Cost = 3;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 20;
+		Damage = 0;
+		Requirement = {"Sword", "Cestus", "Greatsword"};
+		Support = true;
+		Description = "Buff a target ally or self with an effect that causes them to absorb any burning, ghostflame or inferno stacks applied to them, healing them and gives them a dmg and all resist buff for 2 turns, lasts 5 turns.";
+	};
+	["Heavenly Prayer"] = {
+		Cost = 5;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 22;
+		Damage = 0;
+		Support = true;
+		Requirement = {"Sword", "Staff", "Spear", "Greatsword"};
+		Description = "Target an ally to grace you and them with holy light, this grants you both lifesteal on attacks, resist, damage reduction for 5 turns and grants them immunity to death for 2 turns. 22 Turn cd.";
+	};
+	["Lesser Absorb"] = {
+		Cost = 1;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 9;
+		Damage = 0;
+		SupportAllies = true;
+		SelfTarget = false;
+		Description = "Target an ally (not yourself) and create a small bubble over them, this bubble will redirect some of the damage they take to you for 3 turns.";
+	};
+	["Wild Impulse"] = {
+		Cost = 1;
+		Affinity = "Mwagic";
+		Type = "Buff";
+		Cooldown = 10;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Strike a leaning pose while leading with your back and shoulder, turning your next used move into an AoE and applying Vulnerable and Weakened.";
+	};
+	["Breath of Fungyir"] = {
+		Cost = 4;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 20;
+		Damage = 0;
+		SelfTarget = true;
+		Requirement = {"Sword", "Spear", "Greatsword"};
+		Description = "Start a 2 turn long chant, enveloping yourself in life energy, after 2 turns, cast a powerful heal on your entire team, healing you and granting resist.";
+	};
+	Godspeed = {
+		Cost = 0;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 12;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Dramatically accelerate your heartbeat for 3 turns, decreasing the active time of all skill QTEs and making them both faster and easier. Gain 1 Energy for every attack you dodge successfully.";
+	};
+	["Sands of Time"] = {
+		Cost = 1;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 15;
+		Damage = 0;
+		SelfTarget = true;
+		Description = "Enter Heavy Stun for a turn. If Heavy Stun passes and you havenâ€™t lost 10% of your HP, moderately increase both offensive and defensive stats for the rest of the fight.";
+	};
+	Mucilage = {
+		Cost = 3;
+		Affinity = "Magic";
+		Type = "Buff";
+		Cooldown = 12;
+		Damage = 0;
+		Support = true;
+		Description = "Coat a target ally or self with your slime, creating a barrier that reduces incoming damage (depending on type, to a minimum of 1) from attacks for 3 turns.";
+	};
+	Conisura = {
+		Cost = 3;
+		Affinity = "Magic";
+		Type = "Ranged";
+		Cooldown = 10;
+		Damage = 5;
+		Description = "Open a rift on an enemy, sucking out all status effects currently applied to them, then exploding dealing damage based on how many status effects were absorbed.";
+		Scaling = "Dual";
+		NoBuffs = true;
+	};
+	Expose = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Debuff";
+		Cooldown = 6;
+		Damage = 0;
+		Description = "Observe a targets weaknesses and make them more vulnerable towards them.";
+		Duration = 4;
+	};
+	["Gale Uplift"] = {
+		Cost = 3;
+		Affinity = "Nature";
+		Type = "Buff";
+		Cooldown = 12;
+		Damage = 0;
+		SelfTarget = true;
+		Requirement = {"Staff"};
+		Description = "A team wind buff that increases the speed stat of allies and gives them a chance to auto dodge attacks, and lowers the chance for the enemy team to block and dodge.";
+		Duration = 4;
+	};
+	Enrichment = {
+		Cost = 1;
+		Cooldown = 5;
+		Type = "Buff";
+		Affinity = "Nature";
+		Support = true;
+		Requirement = {"Dagger"};
+		Description = "Bless your target with the rejuvenating forces of nature.";
+		Duration = 3;
+	};
+	Flourish = {
+		Cost = 2;
+		Affinity = "Nature";
+		Type = "Ranged";
+		Damage = 9;
+		Cooldown = 6;
+		SelfTarget = true;
+		Requirement = {"Dagger"};
+		Description = "Charge up energy into your bow, and after a turn fire off a spread of arrows.";
+		Scaling = "ArcSpeed";
+	};
+	Stinger = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Damage = 7;
+		Cooldown = 4;
+		Requirement = {"Dagger"};
+		Description = "Thrust your dagger into the enemy, then backflip and fire three coated arrows.";
+		Scaling = "ArcSpeed";
+	};
+	["Perennial Canopy"] = {
+		Cost = 3;
+		Damage = 3;
+		Cooldown = 12;
+		Affinity = "Nature";
+		Type = "Ranged";
+		Requirement = {"Dagger"};
+		Description = "Raise your bow into the air and create a downpour of arrows for a duration.";
+		Scaling = "ArcSpeed";
+		Duration = 4;
+	};
+	["Inferno Rift"] = {
+		Cost = 3;
+		Affinity = "Fire";
+		Type = "Melee";
+		Cooldown = 9;
+		Damage = 12;
+		Adjacent = true;
+		Description = "Condense fire into your leg, then kick the floor, creating a wave of flame forwards towards an enemy, hits adjacent.";
+		Scaling = "Dual";
+	};
+	["Acid Spit"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 4;
+		Description = "Shoots off a ball of acid, inflicts poisoned.";
+	};
+	Smack = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 5;
+		Description = "Le slime does the spin and wow that hurt!";
+	};
+	["Frosty Smack"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 5;
+		Description = "Le slime does the spin and wow that hurt!";
+	};
+	["Frost Spit"] = {
+		Cost = 2;
+		Affinity = "Ice";
+		Type = "Ranged";
+		Cooldown = 3;
+		Damage = 6;
+		Description = "Shoots off a ball of ice, inflicts cold.";
+	};
+	Present = {
+		Cost = 3;
+		Affinity = "Ice";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 10;
+		Description = "The slime creates a present above it, and it has 1 of 2 effects, it either gets thrown at a random enemy and explodes, dealing unblockable damage, or it opens and sprays joy over the enemy team, healing them.";
+	};
+	Steal = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 2;
+		Damage = 0;
+	};
+	["Poison Spew"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 6;
+		Damage = 5;
+	};
+	["Shroom Punch"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 7;
+	};
+	["Spore Strike"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 6;
+	};
+	["Frost Bolts"] = {
+		Cost = 0;
+		Affinity = "Ice";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 5;
+	};
+	Frostbite = {
+		Cost = 2;
+		Affinity = "Ice";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 0;
+	};
+	["Searing Frost"] = {
+		Cost = 3;
+		Affinity = "Ice";
+		Type = "Debuff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Grass Bolt"] = {
+		Cost = 0;
+		Affinity = "Nature";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 6;
+	};
+	["Nature's Embrace"] = {
+		Cost = 2;
+		Affinity = "Nature";
+		Type = "Heal";
+		Cooldown = 5;
+		Damage = 0;
+	};
+	["Vine Trap"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Debuff";
+		Cooldown = 8;
+		Damage = 0;
+	};
+	["Ora!"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 25;
+	};
+	["Sand Blade"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 8;
+	};
+	["Scimitar Impale"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 11;
+	};
+	["Dust Implode"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 8;
+		Damage = 5;
+		CritBonus = -100;
+	};
+	["Sand Blast"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 8;
+	};
+	Sandscreen = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 8;
+		Damage = 7;
+	};
+	["Dust Bomb"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 7;
+		Damage = 15;
+	};
+	["Dust Pulse"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 7;
+	};
+	["Sand Meteor"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 11;
+		Damage = 20;
+	};
+	["Swirling Storm"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+	};
+	["Sand Reform"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+	};
+	Smash = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 10;
+		Chip = 0.6;
+	};
+	["Sand Eruption"] = {
+		Cost = 3;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 7;
+		Damage = 22;
+		Pierce = true;
+	};
+	["Core Rage"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Buff";
+		Cooldown = 8;
+		Damage = 0;
+	};
+	["Dust Burst"] = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 5;
+		Damage = 6;
+	};
+	Crush = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 13;
+	};
+	["Scalding Spray"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 9;
+	};
+	["Slime Creation"] = {
+		Cost = 1;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 10;
+		Damage = 0;
+		Description = "Call forth a slime from the forest to fight alongside you.";
+	};
+	["Poison Eruption"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Melee";
+		Cooldown = 6;
+		Damage = 15;
+	};
+	["Lava Spit"] = {
+		Cost = 0;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 10;
+	};
+	["Lava Pool"] = {
+		Cost = 3;
+		Affinity = "Fire";
+		Type = "Debuff";
+		Cooldown = 9;
+		Damage = 15;
+	};
+	["Lava Bomb"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 10;
+	};
+	["Fire Crush"] = {
+		Cost = 0;
+		Affinity = "Fire";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 12;
+		Chip = 0.5;
+	};
+	["Lava Domain"] = {
+		Cost = 3;
+		Affinity = "Fire";
+		Type = "Debuff";
+		Cooldown = 10;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Magma Breath"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 2;
+	};
+	["Lava Armor"] = {
+		Cost = 1;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Wind Bolt"] = {
+		Cost = 0;
+		Affinity = "Nature";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 5;
+		Scaling = "Dual";
+	};
+	["Gale Pulse"] = {
+		Cost = 2;
+		Affinity = "Nature";
+		Type = "Ranged";
+		Cooldown = 6;
+		Damage = 7;
+		Scaling = "Dual";
+	};
+	Scurry = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 5;
+	};
+	["Fire Claw"] = {
+		Cost = 0;
+		Affinity = "Fire";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 15;
+		Chip = 0.5;
+	};
+	Inferno = {
+		Cost = 0;
+		Affinity = "Fire";
+		Type = "Debuff";
+		Cooldown = 999;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Magma Beam"] = {
+		Cost = 4;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 9;
+		Damage = 30;
+		Chip = 0.5;
+	};
+	["Magma Pillar"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Debuff";
+		Cooldown = 8;
+		Damage = 1;
+		SelfTarget = true;
+	};
+	Hellfire = {
+		Cost = 1;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 8;
+	};
+	["Blaze Core"] = {
+		Cost = 3;
+		Affinity = "Fire";
+		Type = "Buff";
+		Cooldown = 8;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Blaze Eruption"] = {
+		Cost = 2;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 7;
+		Damage = 15;
+		IgnoreTrap = true;
+	};
+	Armageddon = {
+		Cost = 6;
+		Affinity = "Fire";
+		Type = "Ranged";
+		Cooldown = 13;
+		Damage = 0;
+		Pierce = true;
+		IgnoreTrap = true;
+	};
+	["Fog Spread"] = {
+		Cost = 0;
+		Affinity = "Nature";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 7;
+	};
+	["Haze Reflection"] = {
+		Cost = 3;
+		Affinity = "Nature";
+		Type = "Buff";
+		Cooldown = 9;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Airborne Toxins"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 7;
+		Pierce = true;
+	};
+	["Poison Breath"] = {
+		Cost = 0;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 6;
+		Chip = 0.5;
+	};
+	["Poison Spikes"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Debuff";
+		Cooldown = 7;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Toxic Burst"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 7;
+		Damage = 15;
+		SelfTarget = true;
+	};
+	["Toxic Claw"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 9;
+		Chip = 0.5;
+	};
+	["Soul Curse"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Buff";
+		Cooldown = 3;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Blooming Hex"] = {
+		Cost = 3;
+		Affinity = "Hex";
+		Type = "Buff";
+		Cooldown = 8;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Cursed Blow"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 16;
+		Pierce = true;
+	};
+	["Imbued Strike"] = {
+		Cost = 0;
+		Affinity = "Dark";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 12;
+		Chip = 0.5;
+	};
+	["Cursed Skewer"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 11;
+		Pierce = true;
+	};
+	["Darkness Infliction"] = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Debuff";
+		Cooldown = 8;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Hex Corridor"] = {
+		Cost = 3;
+		Affinity = "Hex";
+		Type = "Buff";
+		Cooldown = 13;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Overflowing Curse"] = {
+		Cost = 0;
+		Affinity = "Hex";
+		Type = "Debuff";
+		Cooldown = 4;
+		Damage = 0;
+		IgnoreTrap = true;
+	};
+	["Warped Crush"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 16;
+		Pierce = true;
+		Chip = 0.5;
+	};
+	["Cursed Wave"] = {
+		Cost = 2;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 25;
+		IgnoreTrap = true;
+	};
+	["Cess Breath"] = {
+		Cost = 1;
+		Affinity = "Poison";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 18;
+		Chip = 0.5;
+	};
+	["Plague Rupture"] = {
+		Cost = 2;
+		Affinity = "Poison";
+		Type = "Debuff";
+		Cooldown = 5;
+		Damage = 8;
+		Pierce = true;
+	};
+	["Hexing Burst"] = {
+		Cost = 1;
+		Affinity = "Hex";
+		Type = "Debuff";
+		Cooldown = 6;
+		Damage = 0;
+	};
+	["Blasphemous Obliteration"] = {
+		Cost = 5;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 13;
+		Damage = 25;
+		IgnoreTrap = true;
+		Pierce = true;
+	};
+	["Rending Slash"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 13;
+		Chip = 0.5;
+	};
+	Eclipse = {
+		Cost = 0;
+		Affinity = "Hex";
+		Type = "Buff";
+		Cooldown = 4;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	Shadebringer = {
+		Cost = 1;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 8;
+		Adjacent = true;
+	};
+	MiniShadebringer = {
+		Cost = 0;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 4;
+		NoBuffs = true;
+	};
+	Deathbound = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Ranged";
+		Cooldown = 5;
+		Damage = 14;
+	};
+	["Hexed Rend"] = {
+		Cost = 3;
+		Affinity = "Hex";
+		Type = "Debuff";
+		Cooldown = 6;
+		Damage = 16;
+	};
+	Blackout = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Melee";
+		Cooldown = 4;
+		Damage = 10;
+	};
+	["Invoke Shadeblades"] = {
+		Cost = 3;
+		Affinity = "Dark";
+		Type = "Buff";
+		Cooldown = 13;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	Oblivion = {
+		Cost = 5;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 11;
+		Damage = 25;
+		IgnoreTrap = true;
+		Pierce = true;
+		PercentDamage = true;
+		Fake = false;
+	};
+	["Unyielding Fury"] = {
+		Cost = 2;
+		Affinity = "Dark";
+		Type = "Debuff";
+		Cooldown = 11;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Shade Slash"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 0;
+		Damage = 30;
+		Description = "Your trusty attack, just smack em.";
+	};
+	["Corruption Unveiled"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Melee";
+		Cooldown = 999;
+		Damage = 0;
+		IgnoreTrap = true;
+	};
+	Stunner = {
+		Cost = 0;
+		Affinity = "Hex";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 20;
+		IgnoreTrap = true;
+		Pierce = true;
+	};
+	["Holy Javelin"] = {
+		Cost = 0;
+		Affinity = "Holy";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 11;
+	};
+	["Calling Light"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Ranged";
+		Cooldown = 9;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	Justice = {
+		Cost = 1;
+		Affinity = "Holy";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 1.5;
+		SelfTarget = true;
+	};
+	["High Retribution"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Buff";
+		Cooldown = 6;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Searing Light"] = {
+		Cost = 3;
+		Affinity = "Holy";
+		Type = "Ranged";
+		Cooldown = 4;
+		Damage = 18;
+	};
+	["Light Bolt"] = {
+		Cost = 0;
+		Affinity = "Holy";
+		Type = "Ranged";
+		Cooldown = 0;
+		Damage = 6;
+	};
+	["Sylph's Prayer"] = {
+		Cost = 2;
+		Affinity = "Holy";
+		Type = "Heal";
+		Cooldown = 5;
+		Damage = 0;
+		Support = true;
+	};
+	Rally = {
+		Cost = 2;
+		Affinity = "Physical";
+		Type = "Ranged";
+		Cooldown = 20;
+		Damage = 0;
+		SelfTarget = true;
+	};
+	["Dummy Heal"] = {
+		Cost = 0;
+		Affinity = "Physical";
+		Type = "Heal";
+		Cooldown = 0;
+		Damage = 0;
+		SelfTarget = true;
+	};
+}
+if game.Players.LocalPlayer then
+	module_upvr.Skills = script.Transfer:InvokeServer()
+else
+	task.defer(function() -- Line 286
+		--[[ Upvalues[1]:
+			[1]: module_upvr (readonly)
+		]]
+		for _, v_5_upvr in pairs(game.ServerStorage.Actions.Attacks:GetDescendants()) do
+			if v_5_upvr:IsA("ModuleScript") then
+				local Name_upvr_2 = v_5_upvr.Name
+				local pcall_result1, pcall_result2 = pcall(function() -- Line 290
+					--[[ Upvalues[3]:
+						[1]: v_5_upvr (readonly)
+						[2]: module_upvr (copied, readonly)
+						[3]: Name_upvr_2 (readonly)
+					]]
+					module_upvr.Skills[Name_upvr_2] = require(v_5_upvr).info
+				end)
+				if not pcall_result1 then
+					warn("Constants Skill Error:", Name_upvr_2, pcall_result2)
+				end
+			end
+		end
+		script.Transfer.OnServerInvoke = function() -- Line 299
+			--[[ Upvalues[1]:
+				[1]: module_upvr (copied, readonly)
+			]]
+			return module_upvr.Skills
+		end
+	end)
+end
+module_upvr.Types = {
+	Melee = {
+		TypeIcon = "rbxassetid://10599018417";
+	};
+	Ranged = {
+		TypeIcon = "rbxassetid://10599034359";
+	};
+	Buff = {
+		TypeIcon = "rbxassetid://10599047029";
+	};
+	Debuff = {
+		TypeIcon = "rbxassetid://10599050717";
+	};
+	Heal = {
+		TypeIcon = "rbxassetid://10599041028";
+	};
+	Dual = {
+		TypeIcon = "rbxassetid://13730595651";
+	};
+	Speed = {
+		TypeIcon = "rbxassetid://13707142882";
+	};
+	Luck = {
+		TypeIcon = "rbxassetid://13730610848";
+	};
+	MiscDual = {
+		TypeIcon = "rbxassetid://13730608932";
+	};
+	StrSpeed = {
+		TypeIcon = "rbxassetid://14378210015";
+	};
+	ArcSpeed = {
+		TypeIcon = "rbxassetid://16449061642";
+	};
+}
+module_upvr.BossTeleportInfo = {
+	["Yar'thul, the Blazing Dragon"] = {
+		SpecialLocation = "Volcano";
+		Image = "Volcano";
+	};
+	["Metrom's Vessel"] = {
+		LocationNameVisual = "Temporal Jailhouse";
+		SpecialLocation = "Metrom";
+		Image = "Metrom";
+	};
+	Seraphon = {
+		SpecialLocation = "Church";
+		Image = "Remnants";
+	};
+	Arkhaia = {
+		SpecialLocation = "Crucible";
+		Image = "Remnants";
+	};
+	["Thorian, the Rotten"] = {
+		SpecialLocation = "Remnants";
+		Image = "Remnants";
+	};
+}
+module_upvr.ClassIcons = {
+	Assassin = "rbxassetid://125714791197716";
+	Ranger = "rbxassetid://102217671042904";
+	Rogue = "rbxassetid://111906484740764";
+	Thief = "rbxassetid://110769898591195";
+	Brawler = "rbxassetid://132888122265845";
+	Darkwraith = "rbxassetid://84720172444484";
+	["Martial Artist"] = "rbxassetid://116935700624942";
+	Monk = "rbxassetid://85151533948635";
+	Elementalist = "rbxassetid://74688065919425";
+	Hexer = "rbxassetid://87615242940409";
+	Impaler = "rbxassetid://104019496317103";
+	Lancer = "rbxassetid://131683991038040";
+	Necromancer = "rbxassetid://118062321731465";
+	Saint = "rbxassetid://87086267489759";
+	Slayer = "rbxassetid://131265235431064";
+	Wizard = "rbxassetid://95986634127652";
+	Berserker = "rbxassetid://116858156632897";
+	["Blade Dancer"] = "rbxassetid://114167754708553";
+	Paladin = "rbxassetid://123860254838484";
+	Warrior = "rbxassetid://97738072042442";
+}
+module_upvr.Affinities = {
+	Physical = {
+		Color = Color3.fromRGB(202, 202, 202);
+		ElementIcon = "rbxassetid://10599018417";
+	};
+	Magic = {
+		Color = Color3.fromRGB(0, 145, 255);
+		ElementIcon = "rbxassetid://10604309545";
+	};
+	Fire = {
+		Color = Color3.fromRGB(255, 115, 0);
+		ElementIcon = "rbxassetid://10627855183";
+	};
+	Holy = {
+		Color = Color3.fromRGB(201, 202, 117);
+		ElementIcon = "rbxassetid://10604287487";
+	};
+	Nature = {
+		Color = Color3.fromRGB(105, 202, 105);
+		ElementIcon = "rbxassetid://6602421253";
+	};
+	Hex = {
+		Color = Color3.fromRGB(190, 125, 218);
+		ElementIcon = "rbxassetid://10780480101";
+	};
+	Dark = {
+		Color = Color3.fromRGB(53, 0, 91);
+		ElementIcon = "rbxassetid://11549471959";
+	};
+	Poison = {
+		Color = Color3.fromRGB(88, 31, 162);
+		ElementIcon = "rbxassetid://11549491243";
+	};
+	Ice = {
+		Color = Color3.fromRGB(0, 229, 255);
+		ElementIcon = "rbxassetid://15671777851";
+	};
+}
+function module_upvr.ReturnTiggers() -- Line 382
+	return {
+		["Wind Reflect"] = {"Melee"};
+		["Poison Trap"] = {"Melee"};
+		["Burst Trap"] = {"Melee"};
+		["Illusion Cage"] = {"Melee", "Ranged"};
+		["Simple Domain"] = {"Melee"};
+	}, {
+		["Simple Domain"] = {"Obliteration", "Styx", "Oblivion", "Armageddon", "Blasphemous Obliteration"};
+	}
+end
+module_upvr.SummonOverride = {
+	["Wind Reflect"] = "";
+	["Illusion Cage"] = "";
+	["Simple Domain"] = "";
+}
+module_upvr.SheathStyles = {
+	Side = CFrame.new(-1, -1.3, 1) * CFrame.Angles(-1.1344640137963142, 0, 0);
+	SideReverse = CFrame.new(1, -1.3, 1) * CFrame.Angles(-1.1344640137963142, 0, 0);
+	SideInv = CFrame.new(-1, -1.3, 0.7) * CFrame.Angles(2.007128639793479, 0, 0);
+	SideInvReverse = CFrame.new(1, -1.3, 0.7) * CFrame.Angles(2.007128639793479, 0, 0);
+	Back = CFrame.new(0, 0.6, 0.65) * CFrame.Angles(0, 0, -0.5235987755982988);
+	BackReverse = CFrame.new(-0.373, 0.42, 0.65) * CFrame.Angles(0, 0, 0.5235987755982988);
+	Cestus = CFrame.new(0.022, -0.55, 0) * CFrame.Angles(0, 0, 0);
+	Cestus2 = CFrame.new(-0.022, -0.55, 0) * CFrame.Angles(0, math.pi, 0);
+	Shield = CFrame.new(0, 0.2, 0.65) * CFrame.Angles(0, 0, 0);
+}
+module_upvr.WeaponOffhands = {
+	Paladin = "Shield";
+	["Blade Dancer"] = "Dupe";
+	Rogue = "Dupe";
+	Assassin = "Effect";
+	Lancer = "Shield";
+	Impaler = "Dupe";
+	Saint = "Effect";
+	Hexer = "Effect";
+	Elementalist = "Effect";
+	Necromancer = "Effect";
+	Darkwraith = "Effect";
+	Ranger = "Effect";
+}
+module_upvr.SuperWepReqs = {
+	Saint = "Spear";
+	Rogue = "Dagger";
+	["Blade Dancer"] = "Sword";
+	Ranger = "Dagger";
+}
+module_upvr.WeldTypes = {
+	Cestus = "Right Arm";
+	Effect = "Left Arm";
+}
+module_upvr.EquipParts = {
+	Shield = "Left Arm";
+	Effect = "Left Arm";
+	Dupe = "Left Arm";
+}
+module_upvr.CovenantIcons = {
+	["Blades of the World"] = "rbxassetid://11568788276";
+	["Way of Life"] = "rbxassetid://11804693977";
+	["Church of Raphion"] = "rbxassetid://17464017526";
+	["Cult of Thanasius"] = "";
+	["Hands of the Hero"] = "";
+}
+module_upvr.PassiveDescriptions = {
+	Thievery = "Gain more gold.";
+	Agile = "Run faster.";
+	["Sword Training"] = "Deal more damage with swords.";
+	["Strength Training"] = "Become more proficient with blocking using a sword.";
+	["Spear Training"] = "Deal more damage with spears.";
+	["Swift Fighter"] = "Dodging an attack makes you swifter.";
+	["Fighting Prowess"] = "Deal more damage with cestus.";
+	["Iron Body"] = "Block better.";
+	["Scholar Training"] = "Deal more damage with staves.";
+	Coward = "Enemies may target you less, also increases chance to escape.";
+	["Shield Training"] = "Block better at the cost of moving slower, guarding causes you to absorb damage from your teammates.";
+	["Enduring Fighter"] = "Take less damage.";
+	Blader = "Deal more damage with daggers and make your enemies bleed.";
+	["Advanced Thief"] = "Become better at looting your enemies.";
+	["Holy Emissary"] = "Increase all healing.";
+	["Graceful Returns"] = "Healing an ally buffs you.";
+	Caster = "Chance to get more energy per turn.";
+	["Elemental Master"] = "Take less elemental damage.";
+	["Flaming Overdrive"] = "Boost to your next Monk skill and empowers it with a new effect";
+	["Blessed Fists"] = "Block even better, as well as heal better.";
+	Darkborne = "Your crits create darkcores.";
+	["Spirit Wraith"] = "While low, your summons are empowered.";
+	["Bloody Berserker"] = "Empower yourself with your own blood.";
+	["Deranged Fighter"] = "Debuffs make you berserk.";
+	["Heavy Training"] = "Lets you wield the greatsword.";
+	Bloodlust = "Berserk harder as you continually get close to falling (with a cooldown). Additionally deal 40% more dmg while low hp.";
+	["Dark Caster"] = "Chance to get more energy per turn.";
+	["Death Siphon"] = "Siphon life off fallen enemies.";
+	Shadow = "Chance to phase through attacks.";
+	Poisoner = "Critical attacks poison your enemies.";
+	["Inverse Flaws"] = "Gain benefits from being debuffed.";
+	Tactician = "Start fights with preparation.";
+	Bestiary = "Allows you to view enemy resistances in the encyclopedia.";
+	["Iron Gut"] = "Reduce toxicity from potions drank in battle.";
+	Certified = "Allows you to sell potions and ingredients.";
+	["Hyper Rage"] = "Improves your innate rage.";
+	["Magically Charged"] = "Become more proficient with magic and fire.";
+	["Potion Quaffer"] = "Reduce toxicity from potions drank in battle.";
+	["Spirit Caller"] = "Your summons are tankier. Lesser sylph now has hp regen.";
+	["Enhanced Bloodlust"] = "Gain more benefits from the blood of your enemies.";
+	Mercenary = "Gain more from guild requests.";
+	["Initiate Blade"] = "Grants access to the blades quest board.";
+	Avarice = "Gain much more gold, the traveling merchant respects you.";
+	["Blessing of Survival"] = "A true master of survival can live through the worst situations.";
+	Gatherer = "Gather ingredients better.";
+	["Life Bound"] = "Heal your wounds more effectively.";
+	["Graced One"] = "Improves your lesser heal.";
+	["Blessing of Life"] = "Become one with the life in the world, restoring your wounds.";
+	["Rooted Fighter"] = "Block better at the cost of moving slower, guarding causes you to absorb damage from your teammates.";
+	["Poised Slayer"] = "Blocks and dodges bolster and recover you.";
+	Crusher = "Your attacks against vulnerable enemies are even better, inflicting status empowers you.";
+	Bruiser = "While low gain increased speed and defense.";
+	["Dual Blader"] = "Allows you to dual wield blades, and makes you more proficient with them.";
+	["Parry Training"] = "Gives you the ability to 'Parry' attacks occasionally when you block.";
+	["Hexed Blood"] = "Gives immunity to the hexed status effect.";
+	["Slimy Shield"] = "When blocking a physical attack, blind and weaken your attacker.";
+	["Verdant Archer"] = "Become one with the winds, get a damage and speed buff on every dodge. Also makes strike scale off arcane.";
+	["Mining Expertise"] = "Break ore in one hit";
+	["Supporting Light"] = "After buffing a target recover some hp and gain a boost to damage reduction for 2 turns.";
+	["Spreading Grace"] = "Meditating gives one other person in the party +1 energy as well, and getting hit during your meditation creates a burst of healing for your team that recovers some hp.";
+	["Internal Corruption"] = "Killing a monster yourself grants you +2 energy, summons only grant +1.";
+	["Dark Inversion"] = "Dark and Hex element attacks against you deal less damage and if they do over 20% of your hp then gain 1 energy.";
+}
+module_upvr.InventoryColors = {
+	Default = Color3.fromRGB(68, 68, 68);
+	Weapon = Color3.fromRGB(68, 58, 49);
+	Ingredient = Color3.fromRGB(55, 68, 54);
+	Artifact = Color3.fromRGB(61, 55, 68);
+	Accessory = Color3.fromRGB(58, 67, 68);
+}
+module_upvr.ClassMasteryNodes = {
+	Darkwraith = {
+		Configuration = 1;
+		Starter = "Speed";
+		Stats = {"Luck", "Endurance", "Arcane"};
+		Passives = {{
+			Name = "Dark Generation";
+			Description = "While below 75% hp, gain 2 orbs when you would normally get 1.";
+		}, {
+			Name = "Cursed Fists";
+			Description = "Your strikes now have +20% increased crit chance and apply 1 cursed. All Darkwraith and Darkbeast skills do 10% more damage.";
+		}, {
+			Name = "Overcore";
+			Description = "Whenever you land a critical hit while at max Darkcores (6), empower your Darkbeast's next attack..";
+		}};
+		Actives = {{
+			Name = "Dark Smite Proficiency";
+			Description = "Increases bonus crit chance to +50%, gives an extra orb if the enemy is stunned, hexed or cursed.";
+		}, {
+			Name = "Darkcore Eruption Proficiency";
+			Description = "At max stacks it now inflicts 2 hexed and recovers 10% hp to the user.";
+		}, {
+			Name = "Darkbeast Proficiency";
+			Description = "Your darkbeast's void bite now inflicts 2 weakened 2 vulnerable, and gets a damage buff and an energy gain buff at 5+ orbs.";
+		}};
+	};
+	Rogue = {
+		Configuration = 1;
+		Starter = "Endurance";
+		Stats = {"Strength", "Speed", "Luck"};
+		Passives = {{
+			Name = "Trapper";
+			Description = "You can now place poison traps on allies, poison trap now inflicts half the poison to the entire enemy team, normal amount to the person it proc'd on.";
+		}, {
+			Name = "Vital Strikes";
+			Description = "Attacks against bleeding enemies deal 20% more damage.";
+		}, {
+			Name = "Looter";
+			Description = "Killing an enemy now gives you a stacking luck and speed buff for the rest of the battle.";
+		}};
+		Actives = {{
+			Name = "Poison Trap Proficiency";
+			Description = "The final proc of poison trap now creates a more violent burst of poison, dealing more damage and applying 2 weakened 2 vulnerable.";
+		}, {
+			Name = "Dagger Spread Proficiency";
+			Description = "Your daggers are now poison tipped and inflict 2 poisoned; enemies killed by dagger spread create a burst of poison, dealing small damage to the entire enemy team.";
+		}, {
+			Name = "Slash Barrage Proficiency";
+			Description = "If the target is poisoned, it deals extra damage and inflicts 2 sundered.";
+		}};
+	};
+	Assassin = {
+		Configuration = 1;
+		Starter = "Speed";
+		Stats = {"Luck", "Endurance", "Strength"};
+		Passives = {{
+			Name = "Shadow Master";
+			Description = "All attacks dealt while invisible now deal 30% more damage (doesn't stack with stealth strike's buff).";
+		}, {
+			Name = "Toxic Vitality";
+			Description = "Auto dodging an attack now causes you to fire off a poison dagger at your attacker, dealing a small amount of damage and inflicting 3 poisoned.";
+		}, {
+			Name = "Risk Taker";
+			Description = "Increases the chance to auto dodge with shadow while below 40% hp.";
+		}};
+		Actives = {{
+			Name = "Shadow Form Proficiency";
+			Description = "Now makes your next attack apply 2 sundered and 3 poison.";
+		}, {
+			Name = "Poison Fan Proficiency";
+			Description = "If the target is already poisoned, it deals 10% more damage and applies 10 poison.";
+		}, {
+			Name = "Stealth Strike Proficiency";
+			Description = "Be able to trigger the first 40 poison stacks of an enemy from using stealth strike, and remove the last 40 stacks of poison";
+		}};
+	};
+	Monk = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Speed", "Strength", "Endurance"};
+		Passives = {{
+			Name = "Holy Protection";
+			Description = "Blocking melee attacks while over 90% hp creates a pulse of light that deals 5 damage (scales with str) to the attacker.";
+		}, {
+			Name = "Heated Recovery";
+			Description = "Attacks against burning enemies have 5% lifesteal.";
+		}, {
+			Name = "Holy Mantra Proficiency";
+			Description = "If the 1 resist from holy mantra is proc'd while the defense buff is active then it creates a pulse of healing on the target that recovers 15% hp.";
+		}};
+		Actives = {{
+			Name = "Blazing Barrage Proficiency";
+			Description = "The attack now deals 20% increased damage and applies 2 blinded if the target is burning.";
+		}, {
+			Name = "Flame Drop Proficiency";
+			Description = "Base damage increased by 25%. Gains another 25% based on absorbed flame stacks (max 10).";
+		}, {
+			Name = "Fire Sutra Proficiency";
+			Description = "Targets buffed with fire sutra now have immunity to the effects of burning, ghostflame and inferno, and increased chance to proc burning.";
+		}};
+	};
+	Lancer = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Speed", "Endurance", "Strength"};
+		Passives = {{
+			Name = "Jolting Dodges";
+			Description = "Now fires a shockwave when dodging ranged attacks.";
+		}, {
+			Name = "Overload";
+			Description = "Attacks against stunned enemies deal 100% more damage.";
+		}, {
+			Name = "Cell Charge";
+			Description = "Blocking/Dodging now charges the 50% damage boost. Blocking gives more charge, requiring 10 blocks or 20 dodges.";
+		}};
+		Actives = {{
+			Name = "Rallying Shout Proficiency";
+			Description = "Increased aggro chance, now gives allies a 30% hp regen buff.";
+		}, {
+			Name = "Discharge Proficiency";
+			Description = "Fires 4 smaller lightning projectiles that can hit the same target. Each subsequent hit deals 1/3 damage, with the first hit at full damage, the second at 38%, and the last at 1/3 damage.";
+		}, {
+			Name = "Empowered Pierce Proficiency";
+			Description = "Landing the attack now buffs you with a 25% speed buff and 10% DR buff for 2 turns.";
+		}};
+	};
+	Saint = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Endurance", "Arcane", "Speed"};
+		Passives = {{
+			Name = "Piercing Grace";
+			Description = "Cursed now only negates 75% of your healing instead of 100%.";
+		}, {
+			Name = "All For One";
+			Description = "Increases HP Regen, increased incoming healing by 40%, gain 20% lifesteal on attacks.";
+		}, {
+			Name = "One For All";
+			Description = "Reduced damage by 30%, increased outgoing healing by 50%, increased regen buff on graceful returns.";
+		}};
+		Actives = {{
+			Name = "Holy Grace Proficiency";
+			Description = "Now grants a 25% buff to regen for 3 turns.";
+		}, {
+			Name = "Light Burst Proficiency";
+			Description = "Damage increased by 30%, now inflicts 2 weakened 2 vulnerable and gives you 2% regeneration for 2 turns.";
+		}, {
+			Name = "Cleansing Prayer Proficiency";
+			Description = "Now gives 1 resist and a 5% DR buff for 2 turns.";
+		}};
+	};
+	Hexer = {
+		Configuration = 1;
+		Starter = "Endurance";
+		Stats = {"Speed", "Arcane", "Luck"};
+		Passives = {{
+			Name = "Strategist";
+			Description = "Gain 5% DR per negative status effect applied to you at all times.";
+		}, {
+			Name = "Status Master";
+			Description = "Passively gain a x2 DoT damage buff.";
+		}, {
+			Name = "Delayed Hex";
+			Description = "When an ally/summon dies, the attacker that did it gets 1 hexed.";
+		}};
+		Actives = {{
+			Name = "Abyss Anchor Proficiency";
+			Description = "Abyss Anchor procs 2 vulnerable on hit and disables their passive energy gain for 2 more turns.";
+		}, {
+			Name = "Dark Glare Proficiency";
+			Description = "If target has a status effect apply hex.";
+		}, {
+			Name = "Inverse Abyss Proficiency";
+			Description = "When proc'd the caster gains +1 energy and the enemy team is given bonus debuffs.";
+		}};
+	};
+	Necromancer = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Speed", "Arcane", "Endurance"};
+		Passives = {{
+			Name = "Death Edge";
+			Description = "-1 CD on darklight drain when anything on the field dies (allies, summons, enemies)";
+		}, {
+			Name = "Life Absorption";
+			Description = "Gain 2% regen per summon slot filled by you, aka if u have 1 skeleton it's 2%, if you have both it's 4%.";
+		}, {
+			Name = "Final Goodbye";
+			Description = "When a summon dies, remnants of its power remain in your hands, granting a stacking Arcane buff (up to 15% max, at 5% per summon death).";
+		}};
+		Actives = {{
+			Name = "Call Skeleton Proficiency";
+			Description = "Cost reduced to 1 energy, when your skeleton dies, the energy left over will give your next skeleton 30% more damage, 2% hp regen, increased health, 20% DR and it will turn it black. This effect does not proc on an already buffed skeleton.";
+		}, {
+			Name = "Darklight Drain Proficiency";
+			Description = "Now gives all summons a 15% damage and damage reduction buff for 4 turns, Adds a 20% passive regen buff to everyone for 3 turns, 15% summon damage buff for 4 turns";
+		}, {
+			Name = "Raise Dead Proficiency";
+			Description = "Revived ally HP increased from 40% to 60%,Revived ally cannot die until their next turn begins (but their turn is skipped upon revival),Cooldown reduced from 30 turns to 20 turns.";
+		}};
+	};
+	Paladin = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Speed", "Strength", "Endurance"};
+		Passives = {{
+			Name = "Holy Shield";
+			Description = "Blocking attacks now heals you slightly.";
+		}, {
+			Name = "High Endurance";
+			Description = "While below 30% hp, gain 30% DR (bypasses DR ignorance).";
+		}, {
+			Name = "Runic Shield";
+			Description = "Blocking attacks gives you a 2 turn holy damage buff.";
+		}};
+		Actives = {{
+			Name = "Holy Crash Proficiency";
+			Description = "Holy crash deals extra damage against enemies afflicted with cursed or hexed, and has slight lifesteal.";
+		}, {
+			Name = "Pure Resonation Proficiency";
+			Description = "Pure resonation now gives all allies 1 resist, and slightly more regeneration.";
+		}, {
+			Name = "Sacred Call Proficiency";
+			Description = "Now gives the target a buff to energy gain while active.";
+		}};
+	};
+	Berserker = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Speed", "Strength", "Endurance"};
+		Passives = {{
+			Name = "The Big Sword";
+			Description = "Increased strike damage buff from 20% to 40% and get lifesteal on strikes.";
+		}, {
+			Name = "Berserkin Time";
+			Description = "Increased bloodlust's dmg increase per stack from 10% to 15% and makes it give a damage resistance and regen buff per stack.";
+		}, {
+			Name = "Intense Rage";
+			Description = "Increased the damage buff at low hp from 40% to 60% and now it also gives an energy gain buff.";
+		}};
+		Actives = {{
+			Name = "Carnage Proficiency";
+			Description = "Now applies 2 weakened at the end, deals 20% more damage if the target is weakened and gives a 15% dmg buff for 2 turns if you are below 40%.";
+		}, {
+			Name = "Head Splitter Proficiency";
+			Description = "Now deals adjacent damage and deals 30% extra damage to low health targets,Adjacent enemies now take damage,Grants 1 Bloodlust stack on use.";
+		}, {
+			Name = "Rage Empower Proficiency";
+			Description = "Buffed dmg buff,lasts 1 turn longer, now gives an energy buff as well.";
+		}};
+	};
+	Brawler = {
+		Configuration = 1;
+		Starter = "Endurance";
+		Stats = {"Speed", "Strength", "Luck"};
+		Passives = {{
+			Name = "Oppression";
+			Description = "Passively deal 5% more damage per status effect on targets.";
+		}, {
+			Name = "Impact Variance";
+			Description = "The crusher passive now also applies to weakened, blinded or hexed enemies.";
+		}, {
+			Name = "Adrenaline";
+			Description = "While below 50% hp, gain 10% DR.";
+		}};
+		Actives = {{
+			Name = "Burst Combo Proficiency";
+			Description = "Now inflicts 2 sundered if the target is vulnerable.";
+		}, {
+			Name = "Crushing Strike Proficiency";
+			Description = "If the target has vulnerable or weakened then the blow is more devastating, dealing 20% more damage and applying 2 bleeding 2 blinded.";
+		}, {
+			Name = "Party Table Proficiency";
+			Description = "Now hits adjacent.";
+		}};
+	};
+	Impaler = {
+		Configuration = 1;
+		Starter = "Speed";
+		Stats = {"Strength", "Arcane", "Endurance"};
+		Passives = {{
+			Name = "Blood Mastery";
+			Description = "The bloody berserker passive caps out at 15% hp instead of at 1%.";
+		}, {
+			Name = "Lasting Life";
+			Description = "The hp regen from the deranged fighter passive is now % instead of flat, and now counts positive status effects too (like resist).";
+		}, {
+			Name = "Siphoning";
+			Description = "Attacks against bleeding enemies have 10% lifesteal.";
+		}};
+		Actives = {{
+			Name = "Rending Barrage Proficiency";
+			Description = "Deals increased damage based on the amount of bleed stacks the target has, 2.5% per stack up to a max of 25%.";
+		}, {
+			Name = "Bloody Burst Proficiency";
+			Description = "Fires 3 shards instead of 2";
+		}, {
+			Name = "Blood Eruption Proficiency";
+			Description = "Deals 30% more damage and applies 2 weakened but it debuffs you with -30% DR for 2 turns.";
+		}};
+	};
+	["Blade Dancer"] = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Strength", "Endurance", "Speed"};
+		Passives = {{
+			Name = "Unending Flow";
+			Description = "Deal increasing damage for every consecutive hit you deal, if you don't deal damage for a turn then it resets.";
+		}, {
+			Name = "Deep Focus";
+			Description = "Increased proc chance for enchantments passively.";
+		}, {
+			Name = "Parry Master";
+			Description = "Increases parry chance to 100%, damage on parry slightly reduced.";
+		}};
+		Actives = {{
+			Name = "Impaling Strike Proficiency";
+			Description = "Bleeds for longer, now applies 2 vulnerable as well.";
+		}, {
+			Name = "Simple Domain Proficiency";
+			Description = "Now allows Simple Domain to parry ranged attacks, excluding ultimate moves (e.g., Obliteration, Styx, Justice, Oblivion, etc.). No changes to scaling.";
+		}, {
+			Name = "Flowing Dance Proficiency";
+			Description = "Increased speed scaling, now deals bonus damage and turns a tinge of red against bleeding targets.";
+		}};
+	};
+	Elementalist = {
+		Configuration = 1;
+		Starter = "Luck";
+		Stats = {"Speed", "Arcane", "Endurance"};
+		Passives = {{
+			Name = "Energy Manipulator";
+			Description = "Deal increased damage based on how much Energy you possess at any given moment.";
+		}, {
+			Name = "Elemental Defense";
+			Description = "When hit by an elemental affinity attack, there's a 20% chance to gain +1 energy.";
+		}, {
+			Name = "Element Mastery";
+			Description = "Now reduces ineffective elemental penalties by 20% â†’ A fair trade-off to keep Elementalist viable against resistant enemies.";
+		}};
+		Actives = {{
+			Name = "Blaze Proficiency";
+			Description = "Your blaze now hits all targets, deals more damage and guaranteed applies burning now for 3 turns, it's also now blue.";
+		}, {
+			Name = "Lightning Crash Proficiency";
+			Description = "Your lightning turns purple, guaranteed stuns and becomes more violent and damaging if the target is burning.";
+		}, {
+			Name = "Gale Uplift Proficiency";
+			Description = "Whenever the auto dodge from gale uplift procs that player gets +1 energy.";
+		}};
+	};
+	Ranger = {
+		Configuration = 1;
+		Starter = "Endurance";
+		Stats = {"Arcane", "Speed", "Luck"};
+		Passives = {{
+			Name = "Nature's Wrath";
+			Description = "Verdant Archer's damage buff is increased";
+		}, {
+			Name = "Lightspeed";
+			Description = " Dodging / scoring a critical hit for Verdant Archer now grants a stacking 10% autododge chance.";
+		}, {
+			Name = "Enrichment Proficiency";
+			Description = "Now additionally heals the target with the heal scaling on Arc and Speed)";
+		}};
+		Actives = {{
+			Name = "Flourish Proficiency";
+			Description = "Increase aggro buff to 100%, and increases speed buff";
+		}, {
+			Name = "Stinger Proficiency";
+			Description = "Initial stab now applies Sundered";
+		}, {
+			Name = "Perennial Canopy Proficiency";
+			Description = "Increases its turn duration to 6 turns";
+		}};
+	};
+}
+module_upvr.DifficultyLockedTradeItems = {"Lost Scroll of Absolute Radiance", "Lost Scroll of Breath of Fungyir", "Lost Scroll of Heavenly Prayer", "Lost Scroll of Metrom's Grasp", "Lost Scroll of Permafrost Curse", "Lost Scroll of Wild Impulse", "Phoenix Tear", "Lineage Shard", "Memory Fragment", "Soul Dust", "Resplendant Essence", "Scroll of Bulk Up", "Scroll of Immolation", "Scroll of Surprise Package", "Scroll of Lesser Empower", "Scroll of Torching Soul", "Rot Core", "Haze Chunk", "Slime Chunk", "Sand Core", "Restless Fragment", "Mushroom Cap", "Medium Healing Potion", "Scroll of Fireball", "Scroll of Dark Slash", "Scroll of Self Cure", "Scroll of Simple Curse", "Scroll of Steel Body", "Scroll of Ice Shards", "Scroll of Blizzard", "Scroll of Wind Reflect", "Scroll of Lesser Absorb"}
+module_upvr.MutoDictionary = {
+	SellWhitelist = {
+		["Phoenix Tear"] = 40;
+		["Lineage Shard"] = 120;
+		["Memory Fragment"] = 10;
+		["Soul Dust"] = 10;
+		["Resplendant Essence"] = 100;
+		["Narthana's Sigil"] = 80;
+		["Reality Watch"] = 80;
+		["Metrom's Amulet"] = 180;
+		Darksigil = 100;
+		["Chaos Orb"] = 130;
+		["Stellian Core"] = 130;
+		["Shifting Hourglass"] = 100;
+		["Void Key"] = 200;
+		["Lost Scroll of Absolute Radiance"] = 100;
+		["Lost Scroll of Breath of Fungyir"] = 100;
+		["Lost Scroll of Heavenly Prayer"] = 100;
+		["Lost Scroll of Metrom's Grasp"] = 100;
+		["Lost Scroll of Permafrost Curse"] = 100;
+		["Lost Scroll of Wild Impulse"] = 100;
+		["Echo Shard"] = 160;
+		["Skyward Totem"] = 100;
+	};
+	BuyWhitelist = {
+		["Phoenix Tear"] = 140;
+		["Lineage Shard"] = 420;
+		["Memory Fragment"] = 35;
+		["Soul Dust"] = 35;
+		["Resplendant Essence"] = 350;
+		["Narthana's Sigil"] = 280;
+		["Reality Watch"] = 280;
+		["Metrom's Amulet"] = 630;
+		Darksigil = 350;
+		["Chaos Orb"] = 455;
+		["Stellian Core"] = 450;
+		["Shifting Hourglass"] = 245;
+		["Void Key"] = 700;
+		["Lost Scroll of Absolute Radiance"] = 350;
+		["Lost Scroll of Breath of Fungyir"] = 350;
+		["Lost Scroll of Heavenly Prayer"] = 350;
+		["Lost Scroll of Metrom's Grasp"] = 350;
+		["Lost Scroll of Permafrost Curse"] = 350;
+		["Lost Scroll of Wild Impulse"] = 350;
+		["Echo Shard"] = 560;
+		["Skyward Totem"] = 350;
+	};
+}
+return module_upvr
