@@ -1,3 +1,12 @@
+local FLUENT_URL = "https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"
+local SAVE_MANAGER_URL = "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/SaveManager.lua"
+local INTERFACE_MANAGER_URL = "https://raw.githubusercontent.com/dawid-scripts/Fluent/master/Addons/InterfaceManager.lua"
+local Fluent = loadstring(game:HttpGet(FLUENT_URL))()
+local SaveManager = loadstring(game:HttpGet(SAVE_MANAGER_URL))()
+local InterfaceManager = loadstring(game:HttpGet(INTERFACE_MANAGER_URL))()
+local Player = game:GetService("Players").LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
 local Section = Tabs.ArcaneLineage:AddSection("Autododge")
 local AutoQTESection = Tabs.ArcaneLineage:AddSection("Auto QTE")
 local AutoAttackSection = Tabs.ArcaneLineage:AddSection("Auto Attack")
