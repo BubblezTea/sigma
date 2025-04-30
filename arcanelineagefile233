@@ -1,0 +1,470 @@
+local Section = Tabs.ArcaneLineage:AddSection("Autododge")
+local AutoQTESection = Tabs.ArcaneLineage:AddSection("Auto QTE")
+local AutoAttackSection = Tabs.ArcaneLineage:AddSection("Auto Attack")
+
+local running = false
+local autoQTE = false
+local autoAttack = false
+local autoEscape = false
+local Targetting = "Weakest"
+local weapon = "Sword"
+local delay = 0.5
+local MovesSelected = {}
+
+local currentFightFolder = nil
+local turnChangedConnection = nil
+local attackScheduled = false
+local attackAbortFlag = false
+
+local block = Player.PlayerGui.Combat:WaitForChild("Block")
+local dodgeActive = false
+
+local moveSelectionOrder = {}
+
+--// === Move Getter ===
+local function getAttacks()
+    local Moves = {}
+    local MoveFrame = Player.PlayerGui.Combat.ActionBG.AttacksPage.Attack.ScrollingFrame
+    for _, btn in ipairs(MoveFrame:GetChildren()) do
+        if btn:IsA("TextButton") then
+            table.insert(Moves, btn.Name)
+        end
+    end
+    return Moves
+end
+
+local Attacks = getAttacks()
+
+-- spawns one micro‐loop for each block flash
+local function spawnDodgeLoop()
+    dodgeActive = true
+    while running do
+        ReplicatedStorage.Remotes.Information.RemoteFunction:FireServer({true, true}, "DodgeMinigame")
+        task.wait(delay)
+    end
+end
+
+local function IsSelfTargetSkill(Name)
+    local SelfTargetSkills = {
+        "Endure",
+        "Summon Stand",
+        "Tense Up",
+        "Focus Step",
+        "Circuit Charge",
+        "Pure Resonation",
+        "Mulligan Realm",
+        "Burst Trap",
+        "Self Cure",
+        "Call Sylph",
+        "Rage Empower",
+        "Shadow Form",
+        "Call Darkbeast",
+        "Bulk Up",
+        "Latir Minor",
+        "Rebanar Major",
+        "Absolute Radiance",
+        "Spirit Awakening",
+        "Chronos",
+        "Simple Domain",
+        "Blizzard",
+        "Metrom's Grasp",
+        "Permuth",
+        "Wild Impulse",
+        "Breath of Fungyir",
+        "Godspeed",
+        "Sands of Time",
+        "Gale Uplift",
+        "Flourish",
+        "Searing Frost",
+        "Lava Domain",
+        "Lava Armor",
+        "Inferno",
+        "Magma Pillar",
+        "Blaze Core",
+        "Haze Reflection",
+        "Poison Spikes",
+        "Toxic Burst",
+        "Soul Curse",
+        "Blooming Hex",
+        "Darkness Infliction",
+        "Hex Corridor",
+        "Eclipse",
+        "Invoke Shadeblades",
+        "Unyielding Fury",
+        "Calling Light",
+        "Justice",
+        "High Retribution",
+        "Rally",
+        "Dummy Heal",
+    }
+    return table.find(SelfTargetSkills, Name) ~= nil
+end
+
+local function allAttacksOnCooldown()
+    for _, attackName in ipairs(MovesSelected) do
+        local attackButton = Player.PlayerGui.Combat.ActionBG.AttacksPage.Attack.ScrollingFrame:FindFirstChild(attackName)
+        if attackButton and attackButton:FindFirstChild('CD') then
+            if not attackButton.CD.Visible then
+                return false -- At least one attack is not on cooldown
+            end
+        else
+            return false -- Attack button not found, assume not on cooldown
+        end
+    end
+    return true -- All attacks are on cooldown
+end
+
+local function attackEntity(initTarget)
+    if #MovesSelected == 0 then return end
+
+    local selectedAttack = nil
+    local startIndex = 1
+    local attempts = 0
+
+    -- Start from last used position or beginning
+    if lastAttack then
+        startIndex = (table.find(MovesSelected, lastAttack) or 0) + 1
+    end
+
+    while attempts < #MovesSelected do
+        local currentIndex = ((startIndex + attempts - 1) % #MovesSelected) + 1
+        local candidate = MovesSelected[currentIndex]
+        
+        local attackButton = Player.PlayerGui.Combat.ActionBG.AttacksPage.Attack.ScrollingFrame:FindFirstChild(candidate)
+        if attackButton and attackButton:FindFirstChild('CD') and not attackButton.CD.Visible then
+            selectedAttack = candidate
+            break
+        end
+        
+        attempts = attempts + 1
+    end
+
+    if not selectedAttack then return end
+
+    -- Execute attack
+    local attackTarget = IsSelfTargetSkill(selectedAttack) and Player.Character or initTarget
+    ReplicatedStorage.PlayerTurnInput:InvokeServer("Attack", selectedAttack, {["Attacking"] = attackTarget})
+    
+    -- Update last attack
+    lastAttack = selectedAttack
+end
+
+function findTarget(fightID, targetOption)        
+    if not fightID then return nil end
+    
+    local targetList = {}
+    local fightFolder = ReplicatedStorage.Fights:FindFirstChild(fightID)
+    if not fightFolder then return nil end
+    
+    for _, entity in pairs(workspace.Living:GetChildren()) do
+        if entity:FindFirstChild("FightInProgress") and tostring(entity.FightInProgress.Value) == tostring(fightID) then
+            local isPlayer = false
+            
+            local team2 = fightFolder:FindFirstChild("Team2")
+            if team2 then
+                for _, v in pairs(team2:GetChildren()) do
+                    if v.Value == entity.Name then
+                        isPlayer = true
+                        break
+                    end
+                end
+            end
+            
+            if not isPlayer and entity.Name ~= Player.Name and entity:FindFirstChild("Humanoid") then
+                table.insert(targetList, entity)
+            end
+        end
+    end
+    
+    if #targetList == 0 then return nil end
+    
+    if targetOption == "Weakest" then
+        local target, lowestHealth = nil, math.huge
+        for _, entity in ipairs(targetList) do
+            local health = entity.Humanoid.Health
+            if health < lowestHealth then
+                lowestHealth = health
+                target = entity
+            end
+        end
+        return target
+        
+    elseif targetOption == "Strongest" then
+        local target, highestHealth = nil, 0
+        for _, entity in ipairs(targetList) do
+            local health = entity.Humanoid.Health
+            if health > highestHealth then
+                highestHealth = health
+                target = entity
+            end
+        end
+        return target
+        
+    elseif targetOption == "Random" then
+        return targetList[math.random(1, #targetList)]
+    end
+    return nil
+end
+
+function attack()
+    if not autoAttack then return end
+    local fightID = (Player.Character:FindFirstChild('FightInProgress') and tostring(Player.Character.FightInProgress.Value))
+    if fightID then
+        local fightFolder = ReplicatedStorage.Fights:FindFirstChild(fightID)
+        if fightFolder and tostring(fightFolder.CurrentTurn.Value) == Player.Name then
+            local target = findTarget(fightID, Targetting)
+            if target then
+                attackEntity(target)
+            end
+        end
+    end
+end
+
+block:GetPropertyChangedSignal("Visible"):Connect(function()
+    if running and block.Visible and not dodgeActive then
+        spawnDodgeLoop()
+    end
+end)
+
+local function allAttacksOnCooldown()
+    for _, attackName in ipairs(MovesSelected) do
+        local attackButton = Player.PlayerGui.Combat.ActionBG.AttacksPage.Attack.ScrollingFrame:FindFirstChild(attackName)
+        if attackButton and attackButton:FindFirstChild('CD') then
+            if not attackButton.CD.Visible then
+                return false
+            end
+        else
+            return false
+        end
+    end
+    return true
+end
+
+ local function startAutoAttackLoop()
+    attackAbortFlag = false
+    currentFightFolder = nil
+    
+    local function onTurnChanged(newTurn)
+        attackAbortFlag = false
+        if tostring(newTurn) == Player.Name and not attackScheduled then
+            print("wow its the players turn")
+            attackScheduled = true
+            
+            -- Calculate random delay
+            local delay = math.random(math.random(2, 4), math.random(5, 6))
+            
+            print("delay starting")
+
+            task.wait(delay)
+
+            print("delay finished")
+            
+            if autoAttack and attackAbortFlag ~= true then
+                print("attacking")
+                attack()
+            else
+                print("one of these guys arent true: " .. tostring(autoAttack) .. " thats auto attacking and then this is attackAbortFlag: " .. tostring(attackAbortFlag))
+            end
+            
+            attackScheduled = false
+        elseif tostring(newTurn) ~= Player.Name then
+            attackAbortFlag = true
+        end
+    end
+
+    -- Main fight monitoring loop
+    while autoAttack do
+        local fightID = Player.Character and 
+                      Player.Character:FindFirstChild('FightInProgress') and 
+                      Player.Character.FightInProgress.Value
+        
+        if fightID then
+            local fightFolder = ReplicatedStorage.Fights:FindFirstChild(fightID)
+            if fightFolder and fightFolder ~= currentFightFolder then
+                currentFightFolder = fightFolder
+                if turnChangedConnection then
+                    turnChangedConnection:Disconnect()
+                end
+                turnChangedConnection = fightFolder.CurrentTurn.Changed:Connect(onTurnChanged)
+                onTurnChanged(fightFolder.CurrentTurn.Value)
+            end
+        else
+            currentFightFolder = nil
+            if turnChangedConnection then
+                turnChangedConnection:Disconnect()
+                turnChangedConnection = nil
+            end
+        end
+        task.wait(1) -- Check for fight changes every second
+    end
+    
+    -- Cleanup when disabling
+    if turnChangedConnection then
+        turnChangedConnection:Disconnect()
+        turnChangedConnection = nil
+    end
+end
+
+local function startAutoQTELoop()
+    task.spawn(function()
+        while autoQTE do
+            for _, weaponName in ipairs({"Fist", "Spear", "Magic", "Dagger", "Sword", "Thorian"}) do
+                local qteTag = weaponName .. "QTE"
+                local frame = Player.PlayerGui.Combat:FindFirstChild(qteTag)
+                if frame and frame.Visible then
+                    frame.Visible = false
+                    task.wait(math.random(math.random(1.5, 2), math.random(2.5, 3)))
+                    ReplicatedStorage.Remotes.Information.RemoteFunction:FireServer(true, qteTag)
+                end
+                task.wait(0.05)
+            end
+            task.wait(0.2)
+        end
+    end)
+end
+
+local Toggle = Section:AddToggle("AutoDodge", { Title = "Auto Dodge", Default = false })
+Toggle:OnChanged(function(val)
+    running = val
+    if running and block.Visible and not dodgeActive then
+        spawnDodgeLoop()
+    end
+end)
+
+local AutoQTEToggle = AutoQTESection:AddToggle("AutoQTEToggle", { Title = "Auto QTE", Default = false })
+AutoQTEToggle:OnChanged(function(val)
+    autoQTE = val
+    if val then
+        startAutoQTELoop()
+    end
+end)
+
+local AutoAttackToggle = AutoAttackSection:AddToggle("AutoAttackToggle", { Title = "Auto Attack", Default = false })
+AutoAttackToggle:OnChanged(function(val)
+    autoAttack = val
+    if val then
+        startAutoAttackLoop()
+    end
+end)
+
+local AutoEscapeToggle = AutoAttackSection:AddToggle("AutoEscapeToggle", { Title = "Auto Escape", Default = false })
+AutoEscapeToggle:OnChanged(function(val)
+    autoEscape = val
+    if val then
+        startAutoAttackLoop()
+    end
+end)
+
+local DelaySlider = Section:AddSlider("DodgeDelay", {
+    Title = "Delay",
+    Description = "Delay between autododge calls.",
+    Default = delay,
+    Min = 0.5,
+    Max = 10.0,
+    Rounding = 0.1
+})
+
+DelaySlider:OnChanged(function(val)
+    delay = val
+end)
+
+local Weapons = AutoQTESection:AddDropdown("Dropdown", {
+    Title = "Weapons",
+    Values = {"Sword", "Dagger", "Spear", "Fist", "Magic", "Thorian"},
+    Multi = false,
+    Default = 1,
+})
+
+Moves:OnChanged(function(selectedValues)
+    -- Clear previous order
+    moveSelectionOrder = {}
+    
+    -- Build order based on selection sequence
+    for value, state in pairs(selectedValues) do
+        if state then
+            table.insert(moveSelectionOrder, value)
+        else
+            -- Remove deselected moves from order
+            local index = table.find(moveSelectionOrder, value)
+            if index then
+                table.remove(moveSelectionOrder, index)
+            end
+        end
+    end
+    
+    -- Update MovesSelected with correct order
+    MovesSelected = moveSelectionOrder
+    
+    -- Create formatted order list
+    local orderList = {}
+    for i, move in ipairs(MovesSelected) do
+        table.insert(orderList, string.format("%d. %s", i, move))
+    end
+    
+    Fluent:Notify({
+        Title = "Move Order Updated",
+        Content = table.concat(orderList, "\n"),
+        Duration = 5
+    })
+end)
+
+local Target = AutoAttackSection:AddDropdown("Dropdown", {
+    Title = "Targetting",
+    Values = {"Weakest", "Strongest", "Random"},
+    Multi = false,
+    Default = 1,
+})
+
+Target:OnChanged(function(Value)
+    Targetting = Value
+end)
+
+Moves:SetValue({
+    Strike = true,
+})
+
+Moves:OnChanged(function(selectedValues)
+    -- Clear previous order
+    moveSelectionOrder = {}
+    
+    -- Track newly selected moves
+    local newSelections = {}
+    for value, state in pairs(selectedValues) do
+        if state then
+            newSelections[value] = true
+            if not table.find(moveSelectionOrder, value) then
+                table.insert(moveSelectionOrder, value)
+            end
+        end
+    end
+    
+    -- Maintain original order for existing selections
+    local tempOrder = {}
+    for _, move in ipairs(moveSelectionOrder) do
+        if newSelections[move] then
+            table.insert(tempOrder, move)
+        end
+    end
+    
+    -- Update MovesSelected with correct order
+    MovesSelected = tempOrder
+    
+    -- Create formatted order list
+    local orderList = {}
+    for i, move in ipairs(tempOrder) do
+        table.insert(orderList, string.format("%d. %s", i, move))
+    end
+    
+    Fluent:Notify({
+        Title = "Move Order Updated",
+        Content = table.concat(orderList, "\n"),
+        Duration = 5
+    })
+end)
+
+Target:SetValue("Weakest")
+Weapons:SetValue("Sword")
+
+Weapons:OnChanged(function(Value)
+    weapon = Value
+end)
